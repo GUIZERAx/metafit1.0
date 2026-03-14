@@ -515,6 +515,25 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
   <div class="cda" id="cda"></div>
 </div>
 
+<!-- COMMUNITY -->
+<div id="community" class="screen">
+  <div class="screen-hdr" style="padding-bottom:12px">
+    <div class="back-btn" onclick="switchTab('dashboard')">←</div>
+    <div class="shdr-info"><h2>COMUNIDADE</h2><p>Meta Fit · Compartilhe sua evolução</p></div>
+    <button onclick="showNewPost()" style="background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.75rem;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;flex-shrink:0;margin-left:auto">+ POST</button>
+  </div>
+  <!-- FILTER TABS -->
+  <div style="display:flex;gap:6px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
+    <div class="comm-ftab active" onclick="filterComm('all',this)" style="flex-shrink:0;background:rgba(0,229,160,.1);border:1px solid var(--accent);color:var(--accent);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">Todos</div>
+    <div class="comm-ftab" onclick="filterComm('workout',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">🏋️ Treinos</div>
+    <div class="comm-ftab" onclick="filterComm('shape',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">📸 Shape</div>
+    <div class="comm-ftab" onclick="filterComm('post',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">💬 Dicas</div>
+  </div>
+  <div id="commFeed" style="padding:0 20px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px">
+    <div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Carregando posts...</div>
+  </div>
+</div>
+
 <!-- DIET -->
 <div id="diet" class="screen">
   <div class="screen-hdr">
@@ -585,7 +604,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 <div class="bnav" id="bottomNav" style="display:none">
   <div class="ni active" onclick="switchTab('dashboard')" id="nav-dashboard"><div class="ni-ico">🏠</div><div class="ni-lbl">Início</div></div>
   <div class="ni" onclick="switchTab('training')" id="nav-training"><div class="ni-ico">🏋️</div><div class="ni-lbl">Treinos</div></div>
-  <div class="ni" onclick="switchTab('diet')" id="nav-diet"><div class="ni-ico">🥗</div><div class="ni-lbl">Dieta</div></div>
+  <div class="ni" onclick="switchTab('community')" id="nav-community"><div class="ni-ico">👥</div><div class="ni-lbl">Comunidade</div></div>
   <div class="ni" onclick="switchTab('profile')" id="nav-profile"><div class="ni-ico">👤</div><div class="ni-lbl">Perfil</div></div>
 </div>
 <div class="toast" id="toast"></div>
@@ -744,29 +763,198 @@ function doLogout(){
 async function loadUserProfile(){
   if(!SESSION) return;
   if(!SESSION.plan){goTo('activate');return;}
-  // try load existing profile
   try{
-    const {data:prof} = await sb.from('profiles').select('*').eq('user_id',SESSION.userId).single();
+    // Load the most recent profile for this user
+    const {data:profs} = await sb.from('profiles')
+      .select('*')
+      .eq('user_id',SESSION.userId)
+      .order('created_at',{ascending:false})
+      .limit(1);
+
+    const prof = profs && profs.length > 0 ? profs[0] : null;
+
     if(prof){
-      P={w:prof.weight,h:prof.height,gw:prof.goal_weight,goal:prof.goal,
-        isHome:prof.train_type==='Em Casa',trainDays:prof.train_days,hasSat:prof.train_saturday,
+      // Profile exists — load it directly, NO onboarding
+      P={
+        w:prof.weight, h:prof.height, gw:prof.goal_weight, goal:prof.goal,
+        isHome:prof.train_type==='Em Casa',
+        trainDays:prof.train_days, hasSat:prof.train_saturday,
         weekPlan:SPLITS[prof.train_days]?.[prof.train_saturday?6:5]||SPLITS['4 dias'][5],
         EX:prof.train_type==='Em Casa'?EXH:EXG,
-        cal:prof.calories,prot:prof.protein,carb:prof.carbs,fat:prof.fat,imc:prof.imc};
-      U={name:prof.name,age:prof.age,weight:prof.weight,height:prof.height,goalWeight:prof.goal_weight,
-        goal:prof.goal,trainType:prof.train_type,trainDays:prof.train_days,
-        trainSaturday:prof.train_saturday,dietType:prof.diet_type};
-      avatarUrl=SESSION.avatarUrl||null;
+        cal:prof.calories, prot:prof.protein, carb:prof.carbs, fat:prof.fat, imc:prof.imc,
+        profileId:prof.id, createdAt:prof.created_at
+      };
+      U={
+        name:prof.name, age:prof.age, weight:prof.weight, height:prof.height,
+        goalWeight:prof.goal_weight, goal:prof.goal, trainType:prof.train_type,
+        trainDays:prof.train_days, trainSaturday:prof.train_saturday, dietType:prof.diet_type
+      };
+      avatarUrl = SESSION.avatarUrl || null;
+
       await loadWorkouts();
       fillAll();
       document.getElementById('bottomNav').style.display='grid';
       goTo('dashboard'); switchTab('dashboard');
-      showToast(`✅ Bem-vindo de volta, ${SESSION.name.split(' ')[0]}!`,'ok');
+      showToast(`✅ Bem-vindo de volta, ${(SESSION.name||U.name||'').split(' ')[0]}!`,'ok');
+
+      // Check if 30-day evaluation is due (non-blocking)
+      checkEvaluationDue(prof.created_at);
       return;
     }
-  }catch(e){}
-  // new user — go to onboarding
+  }catch(e){ console.error('loadUserProfile error:', e); }
+
+  // No profile yet — first time, go to onboarding
   obStep=0; renderStep(); goTo('onboarding');
+}
+
+function checkEvaluationDue(profileCreatedAt){
+  if(!profileCreatedAt) return;
+  const created = new Date(profileCreatedAt);
+  const now = new Date();
+  const daysSince = Math.floor((now - created) / (1000*60*60*24));
+  const lastEvalKey = `mf_last_eval_${SESSION.userId}`;
+  const lastEval = localStorage.getItem(lastEvalKey);
+  const lastEvalDays = lastEval ? Math.floor((now - new Date(lastEval)) / (1000*60*60*24)) : daysSince;
+
+  // Show evaluation modal if 30+ days since profile creation or last evaluation
+  if(lastEvalDays >= 30){
+    setTimeout(()=> showEvalModal(daysSince), 1500);
+  }
+}
+
+function showEvalModal(days){
+  const ov = document.createElement('div');
+  ov.className = 'modal-overlay';
+  ov.id = 'evalModal';
+  ov.innerHTML = `
+    <div class="modal-box" style="border-color:var(--gold)">
+      <div class="mb-icon">📊</div>
+      <div class="mb-title" style="color:var(--gold)">AVALIAÇÃO MENSAL</div>
+      <div class="mb-sub">Já se passaram <strong style="color:var(--gold)">${days} dias</strong> desde seu último plano!<br><br>Hora de atualizar seu peso e refazer a avaliação para que a IA ajuste seus treinos e dieta de acordo com sua evolução.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div style="background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);border-radius:9px;padding:11px;font-size:.78rem;color:var(--muted);line-height:1.5">
+          <strong style="color:var(--gold);display:block;margin-bottom:4px">🎯 O que vai ser atualizado:</strong>
+          Peso atual → novos macros → treinos recalibrados → dicas personalizadas para sua fase atual
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="dismissEval()" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.82rem;padding:11px;border-radius:50px;cursor:pointer">Depois</button>
+        <button onclick="startMonthlyEval()" style="flex:2;background:linear-gradient(135deg,var(--gold),#ffaa00);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.88rem;padding:11px;border-radius:50px;cursor:pointer;border:none">FAZER AGORA 💪</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+function dismissEval(){
+  // Snooze 3 days
+  const snoozeKey = `mf_eval_snooze_${SESSION.userId}`;
+  localStorage.setItem(snoozeKey, new Date().toISOString());
+  document.getElementById('evalModal')?.remove();
+}
+
+function startMonthlyEval(){
+  document.getElementById('evalModal')?.remove();
+  // Save last eval date
+  localStorage.setItem(`mf_last_eval_${SESSION.userId}`, new Date().toISOString());
+  // Go to monthly eval — only asks weight + goal, keeps rest
+  showMonthlyEvalScreen();
+}
+
+function showMonthlyEvalScreen(){
+  // Only ask for new weight and if goal changed — keeps all other settings
+  const ov = document.createElement('div');
+  ov.className = 'modal-overlay';
+  ov.id = 'monthlyEvalScreen';
+  ov.innerHTML = `
+    <div class="modal-box" style="border-color:var(--accent);max-width:340px">
+      <div class="mb-icon">⚖️</div>
+      <div class="mb-title">ATUALIZAR DADOS</div>
+      <div class="mb-sub">Informe seu peso atual para recalcularmos seu plano.</div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);display:block;margin-bottom:6px">Peso atual (kg)</label>
+        <input id="eval-weight" type="number" placeholder="Ex: 82" value="${U.weight||''}"
+          style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:1rem;padding:12px 14px;border-radius:10px;outline:none;">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);display:block;margin-bottom:6px">Objetivo continua o mesmo?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="evalGoalOpts">
+          ${['Emagrecer','Ganhar Massa','Manter'].map(g=>`
+            <div onclick="selEvalGoal('${g}',this)"
+              style="background:var(--card);border:2px solid ${U.goal===g?'var(--accent)':'var(--border)'};border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;font-size:.72rem;font-weight:700;transition:all .2s"
+              class="eval-goal-opt ${U.goal===g?'sel':''}">
+              ${g==='Emagrecer'?'🔥':g==='Ganhar Massa'?'💪':'⚖️'}<br>${g}
+            </div>`).join('')}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="document.getElementById('monthlyEvalScreen').remove()" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.82rem;padding:11px;border-radius:50px;cursor:pointer">Cancelar</button>
+        <button onclick="submitMonthlyEval()" style="flex:2;background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.88rem;padding:11px;border-radius:50px;cursor:pointer;border:none">ATUALIZAR PLANO ✓</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+let evalGoal = null;
+function selEvalGoal(goal, el){
+  evalGoal = goal;
+  document.querySelectorAll('.eval-goal-opt').forEach(e=>{
+    e.style.borderColor='var(--border)';
+  });
+  el.style.borderColor = 'var(--accent)';
+}
+
+async function submitMonthlyEval(){
+  const newWeight = parseFloat(document.getElementById('eval-weight').value);
+  if(!newWeight || newWeight < 30 || newWeight > 300){
+    showToast('Informe um peso válido','err'); return;
+  }
+  const newGoal = evalGoal || U.goal;
+
+  // Update U with new data
+  U.weight = newWeight;
+  U.goal = newGoal;
+
+  // Recalculate macros
+  const w=newWeight, h=parseFloat(U.height)||175;
+  let cal=2000, prot=Math.round(w*2.2), carb=200, fat=60;
+  if(newGoal==='Emagrecer'){cal=Math.round(w*26);carb=150;fat=55;}
+  else if(newGoal==='Ganhar Massa'){cal=Math.round(w*35);carb=280;prot=Math.round(w*2.6);fat=70;}
+  else{cal=Math.round(w*30);carb=220;fat=65;}
+
+  P.w=newWeight; P.goal=newGoal; P.cal=cal; P.prot=prot; P.carb=carb; P.fat=fat;
+  P.imc=(w/((h/100)**2)).toFixed(1);
+  P.EX = U.trainType==='Em Casa'?EXH:EXG;
+
+  // Save weight history
+  if(sb && dbOK && SESSION){
+    try{
+      await sb.from('weight_history').insert([{
+        user_id:SESSION.userId, weight:newWeight,
+        note:`Avaliação mensal — Meta: ${newGoal}`
+      }]).catch(()=>{});
+    }catch(e){}
+
+    // Update profile in DB (upsert)
+    try{
+      await sb.from('profiles')
+        .update({weight:newWeight, goal:newGoal, calories:cal, protein:prot, carbs:carb, fat:fat, imc:parseFloat(P.imc)})
+        .eq('user_id', SESSION.userId);
+    }catch(e){ console.error(e); }
+  }
+
+  // Mark eval done
+  localStorage.setItem(`mf_last_eval_${SESSION.userId}`, new Date().toISOString());
+
+  document.getElementById('monthlyEvalScreen')?.remove();
+  fillAll();
+  showToast('✅ Plano atualizado com sucesso!','ok');
+
+  // Show summary
+  setTimeout(()=>{
+    const diff = (parseFloat(U.goalWeight||U.weight) - newWeight).toFixed(1);
+    const diffTxt = diff > 0 ? `Faltam ${Math.abs(diff)}kg para sua meta` : diff < 0 ? `Você ultrapassou sua meta em ${Math.abs(diff)}kg! 🎉` : 'Você atingiu sua meta! 🏆';
+    showToast(`📊 ${newWeight}kg · ${diffTxt}`,'info');
+  }, 1000);
 }
 
 // ═══════════════════════════════════
@@ -775,26 +963,52 @@ async function loadUserProfile(){
 async function saveProfile(){
   if(!sb||!dbOK||!SESSION) return;
   try{
-    const {data,error}=await sb.from('profiles').insert([{
-      user_id:SESSION.userId,name:U.name,age:parseInt(U.age)||0,
-      weight:parseFloat(U.weight)||0,height:parseFloat(U.height)||0,
-      goal_weight:parseFloat(U.goalWeight)||0,goal:U.goal,
-      train_type:U.trainType,train_days:U.trainDays,
-      train_saturday:U.trainSaturday||false,diet_type:U.dietType,
-      calories:P.cal,protein:P.prot,carbs:P.carb,fat:P.fat,imc:parseFloat(P.imc)
-    }]).select().single();
-    if(error)throw error;
+    // Check if profile already exists
+    const {data:existing} = await sb.from('profiles')
+      .select('id').eq('user_id',SESSION.userId).limit(1);
+
+    const profileData = {
+      user_id:SESSION.userId, name:U.name, age:parseInt(U.age)||0,
+      weight:parseFloat(U.weight)||0, height:parseFloat(U.height)||0,
+      goal_weight:parseFloat(U.goalWeight)||0, goal:U.goal,
+      train_type:U.trainType, train_days:U.trainDays,
+      train_saturday:U.trainSaturday||false, diet_type:U.dietType,
+      calories:P.cal, protein:P.prot, carbs:P.carb, fat:P.fat, imc:parseFloat(P.imc)
+    };
+
+    if(existing && existing.length > 0){
+      // Update existing profile
+      await sb.from('profiles').update(profileData).eq('user_id',SESSION.userId);
+    } else {
+      // Insert new profile
+      await sb.from('profiles').insert([profileData]);
+    }
+
+    // Save initial weight history entry
+    await sb.from('weight_history').insert([{
+      user_id:SESSION.userId,
+      weight:parseFloat(U.weight)||0,
+      note:'Plano criado — peso inicial'
+    }]).catch(()=>{});
+
+    // Mark plan start date in session
+    SESSION.planStartDate = new Date().toISOString();
+    localStorage.setItem('mf_session', JSON.stringify(SESSION));
+    localStorage.setItem(`mf_last_eval_${SESSION.userId}`, new Date().toISOString());
+
     showToast('💾 Perfil salvo no Supabase!','ok');
-  }catch(e){console.error(e);}
+  }catch(e){ console.error('saveProfile error:', e); }
 }
 
-async function saveWorkout(idx){
+async function saveWorkout(idx, photo=null, note=''){
   if(!sb||!dbOK||!SESSION) return;
   try{
     const d=P.weekPlan[idx];
     const {error}=await sb.from('completed_workouts').insert([{
-      user_id:SESSION.userId,day_index:idx,
-      day_name:DAYS_F[idx],muscle_group:d.m,week_start:getMonday()
+      user_id:SESSION.userId, day_index:idx,
+      day_name:DAYS_F[idx], muscle_group:d.m, week_start:getMonday(),
+      photo_base64:photo?photo.substring(0,50000):null,
+      note:note||null
     }]);
     if(error)throw error;
     showToast('💾 Treino salvo no banco!','ok');
@@ -1073,7 +1287,7 @@ function renderDashEx(idx){
   el.innerHTML=exs.map((e,i)=>`<div class="ex-mini"><div class="em-num">0${i+1}</div><div class="em-name">${e.n}</div><div class="em-info">${e.sets} × ${e.reps}</div></div>`).join('');
 }
 
-function completeToday(){completeDay(0);}
+function completeToday(){ showFinishDayModal(0); }
 async function completeDay(idx){
   if(!P.weekPlan||P.weekPlan[idx].g==='rest'||completedDays.has(idx))return;
   completedDays.add(idx);
@@ -1108,18 +1322,454 @@ function clickTrainDay(idx,el){
   document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');curTrainDay=idx;renderExList(idx);
 }
+
+// per-exercise check state: { dayIdx: Set of exercise indices }
+const checkedExercises = {};
+
 function renderExList(idx){
   if(!P.weekPlan)return;
   const d=P.weekPlan[idx];
   const list=document.getElementById('exList'),area=document.getElementById('cda');
-  const plan=SESSION?.plan||'basico';
-  if(d.g==='rest'){list.innerHTML=`<div class="rest-sc"><div class="ri">😴</div><div class="rt">DESCANSO TOTAL</div><div class="rs">${DAYS_F[idx]} — ${TIPS.rest[0]}</div></div>`;area.innerHTML='';return;}
+  if(d.g==='rest'){
+    list.innerHTML=`<div class="rest-sc"><div class="ri">😴</div><div class="rt">DESCANSO TOTAL</div><div class="rs">${DAYS_F[idx]} — ${TIPS.rest[0]}</div></div>`;
+    area.innerHTML='';return;
+  }
+  if(!checkedExercises[idx]) checkedExercises[idx]=new Set();
   const exs=P.EX[d.g]||P.EX.fullbody;
-  list.innerHTML=exs.map((e,i)=>`<div class="ex-card fade"><div class="ec-hdr"><div class="ec-num">0${i+1}</div><div><div class="ec-n">${e.n}</div><div class="ec-m">${e.m}</div></div></div><div class="ep-row"><div class="ep">Séries <span>${e.sets}</span></div><div class="ep">Reps <span>${e.reps}</span></div><div class="ep">Descanso <span>${e.rest}</span></div></div></div>`).join('');
-  const isDone=completedDays.has(idx),tips=TIPS[d.g]||[],tip=tips[Math.floor(Math.random()*tips.length)]||'';
-  area.innerHTML=`<div class="tip-card"><div class="tip-title">💡 DICA — ${d.m.toUpperCase()}</div><div class="tip-text">${tip}</div></div><button class="btn-complete ${isDone?'completed':''}" onclick="${isDone?'':' completeDay('+idx+')'}">${isDone?'✅ TREINO CONCLUÍDO — SALVO NO BANCO':'✓ CONCLUIR E SALVAR TREINO'}</button>`;
+  const isDayDone=completedDays.has(idx);
+  const tips=TIPS[d.g]||[],tip=tips[Math.floor(Math.random()*tips.length)]||'';
+  const checkedCount=checkedExercises[idx].size;
+  const total=exs.length;
+  const progress=Math.round((checkedCount/total)*100);
+
+  list.innerHTML=`
+    <div style="padding:0 20px 10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:.72rem;color:var(--muted);font-weight:600">${isDayDone?'✅ Treino concluído':'PROGRESSO DO TREINO'}</span>
+        <span style="font-size:.72rem;font-weight:800;color:var(--accent)">${checkedCount}/${total} exercícios</span>
+      </div>
+      <div style="background:var(--border);border-radius:50px;height:6px;overflow:hidden">
+        <div style="height:100%;background:var(--grad);border-radius:50px;width:${progress}%;transition:width .5s ease"></div>
+      </div>
+    </div>
+    ${exs.map((e,i)=>{
+      const checked=checkedExercises[idx].has(i)||isDayDone;
+      return`<div class="ex-card fade" id="exc_${idx}_${i}" style="${checked?'border-color:rgba(0,229,160,.4);background:rgba(0,229,160,.04)':''}">
+        <div class="ec-hdr" style="cursor:pointer" onclick="toggleExercise(${idx},${i},${exs.length})">
+          <div class="ec-num" style="${checked?'background:var(--accent);color:#080C10':''}">
+            ${checked?'✓':`0${i+1}`}
+          </div>
+          <div style="flex:1">
+            <div class="ec-n" style="${checked?'text-decoration:line-through;opacity:.6':''}">${e.n}</div>
+            <div class="ec-m">${e.m}</div>
+          </div>
+          <div style="font-size:.7rem;color:${checked?'var(--accent)':'var(--muted)'};font-weight:700">
+            ${checked?'✓ FEITO':'MARCAR'}
+          </div>
+        </div>
+        <div class="ep-row">
+          <div class="ep">Séries <span>${e.sets}</span></div>
+          <div class="ep">Reps <span>${e.reps}</span></div>
+          <div class="ep">Descanso <span>${e.rest}</span></div>
+        </div>
+      </div>`;
+    }).join('')}`;
+
+  // Complete day area
+  const allChecked = checkedCount >= total;
+  area.innerHTML=`
+    <div class="tip-card"><div class="tip-title">💡 DICA — ${d.m.toUpperCase()}</div><div class="tip-text">${tip}</div></div>
+    ${isDayDone
+      ? `<div style="background:rgba(0,229,160,.08);border:2px solid var(--accent);border-radius:14px;padding:16px;text-align:center">
+           <div style="font-size:1.5rem;margin-bottom:6px">✅</div>
+           <div style="font-family:'Bebas Neue';font-size:1.2rem;letter-spacing:2px;color:var(--accent)">TREINO DO DIA CONCLUÍDO!</div>
+           <button onclick="shareWorkoutToComm(${idx})" style="margin-top:10px;background:rgba(61,155,255,.1);border:1px solid var(--accent3);color:var(--accent3);font-family:'Outfit';font-weight:700;font-size:.8rem;padding:8px 16px;border-radius:20px;cursor:pointer">📸 Compartilhar na Comunidade</button>
+         </div>`
+      : `<div style="display:flex;flex-direction:column;gap:8px">
+           <button class="btn-complete ${allChecked?'':'disabled-btn'}" onclick="showFinishDayModal(${idx})"
+             style="${!allChecked?'opacity:.5;cursor:default':''}">
+             ${allChecked?'🏁 FINALIZAR TREINO DO DIA':'✓ MARQUE TODOS OS EXERCÍCIOS'}
+           </button>
+           <button onclick="showFinishDayModal(${idx},true)"
+             style="background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-size:.78rem;font-weight:600;padding:10px;border-radius:10px;cursor:pointer">
+             📸 Concluir com foto do treino
+           </button>
+         </div>`
+    }`;
 }
+
+function toggleExercise(dayIdx, exIdx, total){
+  if(completedDays.has(dayIdx))return;
+  if(!checkedExercises[dayIdx]) checkedExercises[dayIdx]=new Set();
+  if(checkedExercises[dayIdx].has(exIdx)) checkedExercises[dayIdx].delete(exIdx);
+  else checkedExercises[dayIdx].add(exIdx);
+  renderExList(dayIdx);
+}
+
+function showFinishDayModal(idx, withPhoto=false){
+  if(completedDays.has(idx))return;
+  const d=P.weekPlan[idx];
+  const exs=P.EX[d.g]||P.EX.fullbody;
+  const allChecked=checkedExercises[idx]?.size>=exs.length;
+  if(!allChecked && !withPhoto){showToast('Marque todos os exercícios primeiro!','err');return;}
+
+  const ov=document.createElement('div');ov.className='modal-overlay';ov.id='finishDayOv';
+  ov.innerHTML=`
+    <div class="modal-box" style="max-width:320px">
+      <div style="font-size:2.5rem;margin-bottom:8px">🏁</div>
+      <div class="mb-title">FINALIZAR TREINO</div>
+      <div class="mb-sub">${d.m} — ${DAYS_F[idx]}</div>
+      ${withPhoto?`
+        <div style="margin-bottom:12px">
+          <div style="background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;margin-bottom:8px" id="workoutPhotoArea" onclick="document.getElementById('workoutPhotoInput').click()">
+            <div id="wphInner"><div style="font-size:1.8rem;margin-bottom:4px">📸</div><div style="font-size:.78rem;color:var(--muted)">Adicionar foto do treino</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">(opcional)</div></div>
+          </div>
+          <input type="file" id="workoutPhotoInput" accept="image/*" style="display:none" onchange="onWorkoutPhoto(event)">
+        </div>`:''}
+      <div style="margin-bottom:12px">
+        <input id="workoutNote" type="text" placeholder="Deixe um comentário... (opcional)"
+          style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:.88rem;padding:10px 12px;border-radius:9px;outline:none">
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Compartilhar na comunidade?</div>
+        <div style="display:flex;gap:8px">
+          <div onclick="setShareComm(false,this)" class="share-opt sel" style="flex:1;background:rgba(0,229,160,.1);border:2px solid var(--accent);color:var(--accent);font-size:.75rem;font-weight:700;padding:8px;border-radius:8px;cursor:pointer;text-align:center;transition:all .2s">Não</div>
+          <div onclick="setShareComm(true,this)" class="share-opt" style="flex:1;background:var(--card);border:2px solid var(--border);color:var(--muted);font-size:.75rem;font-weight:700;padding:8px;border-radius:8px;cursor:pointer;text-align:center;transition:all .2s">📢 Sim!</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="document.getElementById('finishDayOv').remove()" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.82rem;padding:11px;border-radius:50px;cursor:pointer">Cancelar</button>
+        <button onclick="finishDay(${idx})" style="flex:2;background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.9rem;padding:11px;border-radius:50px;cursor:pointer;border:none">CONCLUIR 💪</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+let workoutPhotoData=null, shareToComm=false;
+function onWorkoutPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    workoutPhotoData=ev.target.result;
+    const area=document.getElementById('workoutPhotoArea');
+    if(area) area.innerHTML=`<img src="${workoutPhotoData}" style="width:100%;max-height:160px;object-fit:cover;border-radius:9px;display:block">`;
+  };
+  r.readAsDataURL(f);
+}
+function setShareComm(val,el){
+  shareToComm=val;
+  document.querySelectorAll('.share-opt').forEach(e=>{
+    e.style.background='var(--card)';e.style.borderColor='var(--border)';e.style.color='var(--muted)';
+  });
+  el.style.background=val?'rgba(61,155,255,.1)':'rgba(0,229,160,.1)';
+  el.style.borderColor=val?'var(--accent3)':'var(--accent)';
+  el.style.color=val?'var(--accent3)':'var(--accent)';
+}
+
+async function finishDay(idx){
+  document.getElementById('finishDayOv')?.remove();
+  const note=document.getElementById('workoutNote')?.value||'';
+  await completeDay(idx, workoutPhotoData, note, shareToComm);
+  workoutPhotoData=null; shareToComm=false;
+}
+
+async function completeDay(idx, photo=null, note='', share=false){
+  if(!P.weekPlan||P.weekPlan[idx].g==='rest'||completedDays.has(idx))return;
+  completedDays.add(idx);
+  const d=P.weekPlan[idx];
+
+  // Save to DB with optional photo
+  await saveWorkout(idx, photo, note);
+
+  // Share to community if requested
+  if(share){
+    await createCommPost({
+      type:'workout',
+      content: `Treino de ${d.m} concluído! 💪${note?' — '+note:''}`,
+      image: photo,
+      muscleGroup: d.m
+    });
+  }
+
+  const tips=TIPS[d.g]||[];
+  showCompletionModal(d.m, tips[Math.floor(Math.random()*tips.length)]||'Continue!', idx, photo);
+  updateWeekProg(); updateTodayCard(0); refreshTabs(idx);
+}
+
+function showCompletionModal(muscle, tip, idx, photo){
+  const cw=document.createElement('div');cw.className='confetti-wrap';
+  const colors=['#00E5A0','#3D9BFF','#FF5C38','#FFD700','#FF69B4'];
+  for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.cssText=`left:${Math.random()*100}%;background:${colors[i%5]};width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;animation-delay:${Math.random()}s;animation-duration:${2+Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'2px'}`;cw.appendChild(p);}
+  document.body.appendChild(cw);
+  const ov=document.createElement('div');ov.className='modal-overlay';
+  ov.innerHTML=`
+    <div class="modal-box">
+      <div class="mb-icon">🏆</div>
+      <div class="mb-title">TREINO FEITO!</div>
+      ${photo?`<img src="${photo}" style="width:100%;max-height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px">`:''}
+      <div class="mb-sub">Você completou <strong>${muscle}</strong>! Salvo no banco.</div>
+      <div class="mb-tip"><strong>💡 Para evoluir mais:</strong> ${tip}</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="this.closest('.modal-overlay').remove()" class="btn-close-m" style="flex:1">CONTINUAR 💪</button>
+        <button onclick="this.closest('.modal-overlay').remove();shareWorkoutToComm(${idx})" style="flex:1;background:rgba(61,155,255,.1);border:1px solid var(--accent3);color:var(--accent3);font-family:'Outfit';font-weight:700;font-size:.82rem;padding:11px;border-radius:50px;cursor:pointer">📢 Comunidade</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+  setTimeout(()=>cw.remove(),3500);
+}
+
+function shareWorkoutToComm(idx){
+  switchTab('community');
+  setTimeout(()=>showNewPost('workout', idx), 300);
+}
+
 function refreshTabs(idx){renderDayTabs();renderExList(idx);}
+
+// ═══════════════════════════════════
+//  COMMUNITY
+// ═══════════════════════════════════
+let commFilter='all', commPosts=[];
+
+async function loadCommunity(){
+  const feed=document.getElementById('commFeed');
+  if(!feed)return;
+  if(!sb||!dbOK){
+    feed.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">⚠️ Sem conexão ao banco</div>`;
+    return;
+  }
+  try{
+    let q=sb.from('community_posts').select('*').order('created_at',{ascending:false}).limit(50);
+    if(commFilter!=='all') q=q.eq('post_type',commFilter);
+    const {data}=await q;
+    commPosts=data||[];
+    renderFeed(commPosts);
+  }catch(e){
+    feed.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Erro ao carregar posts</div>`;
+  }
+}
+
+function renderFeed(posts){
+  const feed=document.getElementById('commFeed');
+  if(!feed)return;
+  if(!posts.length){
+    feed.innerHTML=`<div style="text-align:center;padding:40px 20px">
+      <div style="font-size:2.5rem;margin-bottom:10px">🌱</div>
+      <div style="font-family:'Bebas Neue';font-size:1.2rem;letter-spacing:2px;margin-bottom:6px">SEJA O PRIMEIRO!</div>
+      <div style="color:var(--muted);font-size:.82rem">Nenhum post ainda. Compartilhe seu treino e inspire a comunidade!</div>
+    </div>`;
+    return;
+  }
+  feed.innerHTML=posts.map(p=>{
+    const dt=new Date(p.created_at);
+    const timeAgo=getTimeAgo(dt);
+    const typeIcon=p.post_type==='workout'?'🏋️':p.post_type==='shape'?'📸':'💬';
+    const typeLbl=p.post_type==='workout'?'Treino':p.post_type==='shape'?'Shape':'Dica';
+    const isOwn=SESSION?.userId===p.user_id;
+    return`
+      <div class="comm-post" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 14px 10px">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1rem;color:#080C10;flex-shrink:0">
+            ${(p.user_name||'A').charAt(0).toUpperCase()}
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:.86rem">${p.user_name||'Atleta'}</div>
+            <div style="font-size:.68rem;color:var(--muted)">${timeAgo}</div>
+          </div>
+          <span style="background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.2);color:var(--accent);font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:20px">${typeIcon} ${typeLbl}</span>
+          ${isOwn?`<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px">🗑️</button>`:''}
+        </div>
+        <!-- Image -->
+        ${p.image_base64?`<img src="${p.image_base64}" style="width:100%;max-height:260px;object-fit:cover;display:block">`:''}
+        <!-- Content -->
+        <div style="padding:10px 14px">
+          <p style="font-size:.84rem;line-height:1.5;margin-bottom:10px">${p.content||''}</p>
+          ${p.muscle_group?`<div style="font-size:.68rem;color:var(--accent3);margin-bottom:8px">💪 ${p.muscle_group}</div>`:''}
+          <!-- Actions -->
+          <div style="display:flex;align-items:center;gap:12px;border-top:1px solid var(--border);padding-top:10px">
+            <button onclick="toggleLike('${p.id}',this)" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Outfit';font-size:.8rem;color:var(--muted);font-weight:600" id="like_${p.id}">
+              ❤️ <span>${p.likes||0}</span>
+            </button>
+            <button onclick="showComments('${p.id}')" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Outfit';font-size:.8rem;color:var(--muted);font-weight:600">
+              💬 <span>${p.comments_count||0}</span>
+            </button>
+            <button onclick="sharePost('${p.id}')" style="background:none;border:none;cursor:pointer;font-size:.8rem;color:var(--muted);font-weight:600;margin-left:auto">
+              🔗 Compartilhar
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterComm(f,el){
+  commFilter=f;
+  document.querySelectorAll('.comm-ftab').forEach(t=>{
+    t.style.background='var(--card)';t.style.borderColor='var(--border)';t.style.color='var(--muted)';
+  });
+  el.style.background='rgba(0,229,160,.1)';el.style.borderColor='var(--accent)';el.style.color='var(--accent)';
+  loadCommunity();
+}
+
+function showNewPost(type='post', dayIdx=null){
+  const d=dayIdx!==null?P.weekPlan?.[dayIdx]:null;
+  const ov=document.createElement('div');ov.className='modal-overlay';ov.id='newPostOv';
+  ov.innerHTML=`
+    <div class="modal-box" style="max-width:340px;max-height:90vh;overflow-y:auto">
+      <div style="font-size:2rem;margin-bottom:6px">📢</div>
+      <div class="mb-title">NOVO POST</div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Tipo</div>
+        <div style="display:flex;gap:6px">
+          ${['post','workout','shape'].map(t=>`<div onclick="selPostType('${t}',this)" class="ptype-opt" data-type="${t}"
+            style="flex:1;background:${type===t?'rgba(0,229,160,.1)':'var(--card)'};border:2px solid ${type===t?'var(--accent)':'var(--border)'};color:${type===t?'var(--accent)':'var(--muted)'};font-size:.7rem;font-weight:700;padding:7px 4px;border-radius:8px;cursor:pointer;text-align:center;transition:all .2s">
+            ${t==='post'?'💬 Dica':t==='workout'?'🏋️ Treino':'📸 Shape'}
+          </div>`).join('')}
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <textarea id="postContent" placeholder="O que você quer compartilhar com a comunidade? Dica, motivação, resultado..."
+          style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:.88rem;padding:10px 12px;border-radius:9px;outline:none;resize:none;height:90px;line-height:1.5">${d?`Treino de ${d.m} concluído! 💪`:''}</textarea>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="background:var(--surface);border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer" id="npPhotoArea" onclick="document.getElementById('npPhotoInput').click()">
+          <div id="npPhotoInner"><div style="font-size:1.5rem;margin-bottom:3px">📸</div><div style="font-size:.74rem;color:var(--muted)">Adicionar foto (opcional)</div></div>
+        </div>
+        <input type="file" id="npPhotoInput" accept="image/*" style="display:none" onchange="onNpPhoto(event)">
+      </div>
+      <input type="hidden" id="postType" value="${type}">
+      <input type="hidden" id="postMuscle" value="${d?.m||''}">
+      <div style="display:flex;gap:8px">
+        <button onclick="document.getElementById('newPostOv').remove()" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.82rem;padding:11px;border-radius:50px;cursor:pointer">Cancelar</button>
+        <button onclick="submitPost()" style="flex:2;background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.9rem;padding:11px;border-radius:50px;cursor:pointer;border:none">PUBLICAR 📢</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+let npPhotoData=null;
+function onNpPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    npPhotoData=ev.target.result;
+    const area=document.getElementById('npPhotoArea');
+    if(area)area.innerHTML=`<img src="${npPhotoData}" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;display:block">`;
+  };
+  r.readAsDataURL(f);
+}
+
+function selPostType(t,el){
+  document.getElementById('postType').value=t;
+  document.querySelectorAll('.ptype-opt').forEach(e=>{
+    e.style.background='var(--card)';e.style.borderColor='var(--border)';e.style.color='var(--muted)';
+  });
+  el.style.background='rgba(0,229,160,.1)';el.style.borderColor='var(--accent)';el.style.color='var(--accent)';
+}
+
+async function submitPost(){
+  const content=document.getElementById('postContent').value.trim();
+  const type=document.getElementById('postType').value||'post';
+  const muscle=document.getElementById('postMuscle').value||'';
+  if(!content){showToast('Escreva algo para publicar','err');return;}
+  await createCommPost({type,content,image:npPhotoData,muscleGroup:muscle});
+  npPhotoData=null;
+  document.getElementById('newPostOv')?.remove();
+}
+
+async function createCommPost({type,content,image,muscleGroup}){
+  if(!sb||!dbOK||!SESSION)return;
+  try{
+    const {error}=await sb.from('community_posts').insert([{
+      user_id:SESSION.userId,
+      user_name:SESSION.name||U.name||'Atleta',
+      content, post_type:type,
+      image_base64:image?image.substring(0,50000):null, // limit size
+      muscle_group:muscleGroup||null
+    }]);
+    if(error)throw error;
+    showToast('📢 Post publicado na comunidade!','ok');
+    loadCommunity();
+  }catch(e){showToast('Erro ao publicar: '+e.message,'err');}
+}
+
+async function toggleLike(postId,btn){
+  if(!sb||!dbOK||!SESSION)return;
+  try{
+    const {data:existing}=await sb.from('post_likes').select('id').eq('post_id',postId).eq('user_id',SESSION.userId);
+    if(existing&&existing.length){
+      await sb.from('post_likes').delete().eq('post_id',postId).eq('user_id',SESSION.userId);
+      await sb.from('community_posts').update({likes:Math.max(0,(commPosts.find(p=>p.id===postId)?.likes||1)-1)}).eq('id',postId);
+    } else {
+      await sb.from('post_likes').insert([{post_id:postId,user_id:SESSION.userId}]);
+      const post=commPosts.find(p=>p.id===postId);
+      await sb.from('community_posts').update({likes:(post?.likes||0)+1}).eq('id',postId);
+    }
+    await loadCommunity();
+  }catch(e){console.error(e);}
+}
+
+async function showComments(postId){
+  if(!sb||!dbOK)return;
+  const {data:comments}=await sb.from('post_comments').select('*').eq('post_id',postId).order('created_at',{ascending:true});
+  const ov=document.createElement('div');ov.className='modal-overlay';ov.id='commentsOv';
+  ov.innerHTML=`
+    <div class="modal-box" style="max-width:340px;max-height:80vh;overflow-y:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-family:'Bebas Neue';font-size:1.2rem;letter-spacing:2px">💬 COMENTÁRIOS</div>
+        <button onclick="this.closest('.modal-overlay').remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem">✕</button>
+      </div>
+      <div id="commentsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:300px;overflow-y:auto">
+        ${(comments||[]).length?
+          (comments||[]).map(c=>`
+            <div style="background:var(--surface);border-radius:10px;padding:10px">
+              <div style="font-weight:700;font-size:.78rem;color:var(--accent);margin-bottom:3px">${c.user_name||'Atleta'}</div>
+              <div style="font-size:.82rem;line-height:1.4">${c.content}</div>
+              <div style="font-size:.66rem;color:var(--muted);margin-top:4px">${getTimeAgo(new Date(c.created_at))}</div>
+            </div>`).join(''):
+          '<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:16px">Seja o primeiro a comentar!</div>'
+        }
+      </div>
+      <div style="display:flex;gap:8px">
+        <input id="newComment" type="text" placeholder="Escreva um comentário..."
+          style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:.86rem;padding:10px 12px;border-radius:9px;outline:none">
+        <button onclick="addComment('${postId}')" style="background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.82rem;border:none;padding:10px 14px;border-radius:9px;cursor:pointer">Enviar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+async function addComment(postId){
+  const txt=document.getElementById('newComment').value.trim();
+  if(!txt||!SESSION)return;
+  try{
+    await sb.from('post_comments').insert([{post_id:postId,user_id:SESSION.userId,user_name:SESSION.name||'Atleta',content:txt}]);
+    const post=commPosts.find(p=>p.id===postId);
+    await sb.from('community_posts').update({comments_count:(post?.comments_count||0)+1}).eq('id',postId);
+    document.getElementById('commentsOv')?.remove();
+    showToast('💬 Comentário publicado!','ok');
+    await loadCommunity();
+  }catch(e){showToast('Erro ao comentar','err');}
+}
+
+async function deletePost(postId){
+  if(!confirm('Deletar este post?'))return;
+  await sb.from('community_posts').delete().eq('id',postId);
+  showToast('Post deletado','info');
+  await loadCommunity();
+}
+
+function sharePost(postId){
+  navigator.clipboard.writeText(`Meta Fit — Post #${postId}`).then(()=>showToast('🔗 Link copiado!','info')).catch(()=>{});
+}
+
+function getTimeAgo(date){
+  const diff=Math.floor((new Date()-date)/1000);
+  if(diff<60)return 'agora';
+  if(diff<3600)return Math.floor(diff/60)+'min atrás';
+  if(diff<86400)return Math.floor(diff/3600)+'h atrás';
+  return Math.floor(diff/86400)+'d atrás';
+}
 
 // DIET
 function fillDiet(){
@@ -1216,13 +1866,14 @@ function renderAnalysis(a){
 function showToast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3500);}
 
 function switchTab(tab){
-  ['dashboard','training','diet','profile','photo-eval'].forEach(t=>{
+  ['dashboard','training','diet','profile','photo-eval','community'].forEach(t=>{
     const el=document.getElementById(t);if(el)el.classList.toggle('active',t===tab);
     const nav=document.getElementById('nav-'+t);if(nav)nav.classList.toggle('active',t===tab);
   });
   if(tab==='profile')fillProfile();
-  if(tab==='training')renderDayTabs();
+  if(tab==='training'){renderDayTabs();}
   if(tab==='diet')fillDiet();
+  if(tab==='community')loadCommunity();
 }
 
 function goTo(id){
@@ -1231,7 +1882,11 @@ function goTo(id){
   
 }
 
-function startEval(){U={name:U.name};P={};completedDays=new Set();obStep=0;renderStep();goTo('onboarding');document.getElementById('bottomNav').style.display='none';}
+function startEval(){
+  // Don't reset everything — just show the monthly eval modal
+  localStorage.setItem(`mf_last_eval_${SESSION?.userId}`, '2000-01-01'); // Force show
+  showEvalModal(30);
+}
 
 // ═══════════════════════════════════
 //  FORGOT / RESET PASSWORD
