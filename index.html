@@ -329,6 +329,12 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .sv2.g{color:var(--accent);}.sv2.o{color:var(--accent2);}.sv2.b{color:var(--accent3);}
 .sl2{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
 
+
+/* QUIZ SELF ASSESSMENT */
+.quiz-opts{display:flex;gap:7px;flex-wrap:wrap;}
+.qopt{background:var(--card);border:2px solid var(--border);border-radius:9px;padding:7px 12px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted);}
+.qopt:hover{border-color:var(--accent3);color:var(--text);}
+.qopt.sel{border-color:var(--accent);background:rgba(0,229,160,.08);color:var(--accent);}
 @keyframes fadeIn{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
 .anim{animation:fadeIn .32s ease both;}.fade{animation:fadeIn .28s ease both;}
 </style>
@@ -612,19 +618,67 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     <div class="shdr-info"><h2>AVALIAÇÃO</h2><p>Análise corporal personalizada</p></div>
   </div>
   <div class="pe-body">
-    <div class="photo-drop" id="photoDrop" onclick="triggerPhotoUp()">
-      <div id="photoDropInner"><div class="pd-ico">📸</div><div class="pd-t">Envie sua foto</div><div class="pd-s">Toque para selecionar</div></div>
+    <!-- FOTO OPCIONAL -->
+    <div class="photo-drop" id="photoDrop" onclick="triggerPhotoUp()" style="margin-bottom:14px">
+      <div id="photoDropInner"><div class="pd-ico">📸</div><div class="pd-t">Adicionar foto (opcional)</div><div class="pd-s">Para acompanhar sua evolução visual</div></div>
     </div>
     <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="onPhotoSel(event)">
     <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="onAvSel(event)">
-    <div class="photo-tips">
-      <div class="pt-title">📋 Dicas</div>
-      <div class="pt-item"><span>💡</span>Boa iluminação, prefira luz natural</div>
-      <div class="pt-item"><span>👕</span>Roupas justas ou shorts</div>
-      <div class="pt-item"><span>📐</span>Corpo inteiro, frente ou de lado</div>
-      <div class="pt-item"><span>💾</span>Resultado salvo automaticamente no seu perfil</div>
+
+    <!-- QUESTIONÁRIO DE AUTO-AVALIAÇÃO -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">
+      <div style="font-family:'Bebas Neue';font-size:1rem;letter-spacing:2px;margin-bottom:12px">📋 AVALIAÇÃO FÍSICA</div>
+
+      <!-- Q1 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:.76rem;font-weight:600;margin-bottom:7px">Como você avalia sua disposição nos treinos?</div>
+        <div class="quiz-opts" id="q1">
+          <div class="qopt" onclick="selQuiz('q1','Baixa',this)">😴 Baixa</div>
+          <div class="qopt" onclick="selQuiz('q1','Média',this)">😐 Média</div>
+          <div class="qopt" onclick="selQuiz('q1','Alta',this)">💪 Alta</div>
+        </div>
+      </div>
+      <!-- Q2 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:.76rem;font-weight:600;margin-bottom:7px">Como está seu sono nas últimas semanas?</div>
+        <div class="quiz-opts" id="q2">
+          <div class="qopt" onclick="selQuiz('q2','Ruim',this)">😫 Ruim</div>
+          <div class="qopt" onclick="selQuiz('q2','Regular',this)">😐 Regular</div>
+          <div class="qopt" onclick="selQuiz('q2','Bom',this)">😴 Bom</div>
+        </div>
+      </div>
+      <!-- Q3 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:.76rem;font-weight:600;margin-bottom:7px">Você está seguindo a dieta recomendada?</div>
+        <div class="quiz-opts" id="q3">
+          <div class="qopt" onclick="selQuiz('q3','Pouco',this)">❌ Pouco</div>
+          <div class="qopt" onclick="selQuiz('q3','Parcial',this)">⚡ Parcial</div>
+          <div class="qopt" onclick="selQuiz('q3','Sim',this)">✅ Sim</div>
+        </div>
+      </div>
+      <!-- Q4 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:.76rem;font-weight:600;margin-bottom:7px">Visualmente, como você percebe seu corpo?</div>
+        <div class="quiz-opts" id="q4">
+          <div class="qopt" onclick="selQuiz('q4','Sem mudança',this)">😕 Sem mudança</div>
+          <div class="qopt" onclick="selQuiz('q4','Melhorando',this)">📈 Melhorando</div>
+          <div class="qopt" onclick="selQuiz('q4','Muito melhor',this)">🔥 Muito melhor</div>
+        </div>
+      </div>
+      <!-- Q5 -->
+      <div style="margin-bottom:4px">
+        <div style="font-size:.76rem;font-weight:600;margin-bottom:7px">Você está tomando bastante água?</div>
+        <div class="quiz-opts" id="q5">
+          <div class="qopt" onclick="selQuiz('q5','Pouco',this)">🌵 Pouco</div>
+          <div class="qopt" onclick="selQuiz('q5','Regular',this)">💧 Regular</div>
+          <div class="qopt" onclick="selQuiz('q5','Muito',this)">🚿 Muito</div>
+        </div>
+      </div>
     </div>
-    <button class="btn-analyze" id="btnAnalyze" onclick="analyzePhoto()" disabled>🔍 ANALISAR</button>
+
+    <button class="btn-analyze" id="btnAnalyze" onclick="runSelfAssessment()">
+      📊 VER MINHA AVALIAÇÃO
+    </button>
     <div id="analysisResult"></div>
   </div>
 </div>
@@ -735,27 +789,49 @@ async function doLogin(){
   const btn=document.getElementById('btnLoginSub');
   btn.disabled=true; btn.textContent='Entrando...';
   try{
-    const hash = await hashPass(pass);
-    const {data,error} = await sb.from('app_users').select('*').eq('email',email).eq('password_hash',hash).single();
-    if(error||!data){showToast('E-mail ou senha incorretos','err');btn.disabled=false;btn.textContent='ENTRAR';return;}
-    // get token info
-    const {data:tok} = await sb.from('tokens').select('*').eq('used_by',data.id).order('used_at',{ascending:false}).limit(1).single();
+    if(!sb) sb=supabase.createClient(SURL,SKEY);
+    const hash=await hashPass(pass);
+
+    // 1. Authenticate user
+    const {data:user,error:uErr}=await sb.from('app_users')
+      .select('*').eq('email',email).eq('password_hash',hash).single();
+    if(uErr||!user){
+      showToast('E-mail ou senha incorretos','err');
+      btn.disabled=false; btn.textContent='ENTRAR'; return;
+    }
+
+    // 2. Get active token — most recent non-expired
+    const {data:tokens}=await sb.from('tokens')
+      .select('*').eq('used_by',user.id)
+      .order('used_at',{ascending:false}).limit(5);
+
+    const tok=(tokens||[]).find(t=>
+      t.is_lifetime || !t.expires_at || new Date(t.expires_at)>new Date()
+    );
+
     if(!tok){
-      SESSION={userId:data.id,email:data.email,name:data.name,plan:null,avatarUrl:data.avatar_base64};
-      showToast('✅ Login feito! Ative seu token','ok');
+      // No valid plan — check if any token exists (all expired)
+      const hasExpired=(tokens||[]).length>0;
+      SESSION={userId:user.id,email:user.email,name:user.name,plan:null,avatarUrl:user.avatar_base64};
+      localStorage.setItem('mf_session',JSON.stringify(SESSION));
+      showToast(hasExpired?'⏰ Plano expirado. Adquira um novo.':'Ative seu plano para continuar','info');
       goTo('activate'); btn.disabled=false; btn.textContent='ENTRAR'; return;
     }
-    // check expiry
-    if(tok.expires_at && new Date(tok.expires_at)<new Date()){
-      showToast('⏰ Seu plano expirou. Adquira um novo token.','err');
-      SESSION={userId:data.id,email:data.email,name:data.name,plan:null,avatarUrl:data.avatar_base64};
-      goTo('activate'); btn.disabled=false; btn.textContent='ENTRAR'; return;
-    }
-    SESSION={userId:data.id,email:data.email,name:data.name,plan:tok.plan_type,isLifetime:tok.is_lifetime,expiresAt:tok.expires_at,avatarUrl:data.avatar_base64};
-    localStorage.setItem('mf_session', JSON.stringify(SESSION));
-    showToast(`✅ Bem-vindo, ${data.name.split(' ')[0]}!`,'ok');
+
+    // 3. Build session
+    SESSION={
+      userId:user.id, email:user.email, name:user.name,
+      plan:tok.plan_type, isLifetime:tok.is_lifetime,
+      expiresAt:tok.expires_at||null, avatarUrl:user.avatar_base64
+    };
+    localStorage.setItem('mf_session',JSON.stringify(SESSION));
+
+    // 4. ALWAYS clear old profile cache so we fetch fresh from DB
+    localStorage.removeItem(`mf_profile_${user.id}`);
+
+    showToast(`✅ Bem-vindo, ${user.name.split(' ')[0]}!`,'ok');
     await loadUserProfile();
-  }catch(e){showToast('Erro: '+e.message,'err');}
+  }catch(e){showToast('Erro ao conectar. Verifique sua internet.','err');}
   btn.disabled=false; btn.textContent='ENTRAR';
 }
 
@@ -829,39 +905,34 @@ async function loadUserProfile(){
 
 async function refreshProfileFromDB(navigate=true){
   if(!SESSION) return;
-  try{
-    if(!sb) sb = supabase.createClient(SURL, SKEY);
-
-    const {data:profs, error} = await sb
-      .from('profiles')
-      .select('*')
-      .eq('user_id', SESSION.userId)
-      .order('created_at',{ascending:false})
-      .limit(1);
-
-    if(error){  }
-    dbOK = true;
-
-    const prof = profs && profs.length > 0 ? profs[0] : null;
-    if(prof){
-      localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify(prof));
-      applyProfile(prof);
-      document.getElementById('bottomNav').style.display='grid';
-      if(navigate){
-        goTo('dashboard'); switchTab('dashboard');
-        showToast(`✅ Bem-vindo de volta, ${(SESSION.name||'').split(' ')[0]}!`,'ok');
-      }
-      checkEvaluationDue(prof.created_at);
-      return;
+  let prof=null;
+  // Retry up to 3x with backoff
+  for(let attempt=1; attempt<=3; attempt++){
+    try{
+      if(!sb) sb=supabase.createClient(SURL,SKEY);
+      const {data:profs,error}=await sb
+        .from('profiles').select('*')
+        .eq('user_id',SESSION.userId)
+        .order('created_at',{ascending:false}).limit(1);
+      if(!error && profs && profs.length>0){ prof=profs[0]; dbOK=true; break; }
+      if(error && (error.code==='PGRST116'||error.code==='42P01')){ dbOK=true; break; }
+      if(attempt<3) await new Promise(r=>setTimeout(r,800*attempt));
+    }catch(e){
+      if(attempt<3) await new Promise(r=>setTimeout(r,800*attempt));
     }
-  }catch(e){
-        dbOK = true;
   }
-
-  // No profile found anywhere — go to onboarding only if navigating
-  if(navigate){
-    obStep=0; renderStep(); goTo('onboarding');
+  if(prof){
+    localStorage.setItem(`mf_profile_${SESSION.userId}`,JSON.stringify(prof));
+    applyProfile(prof);
+    document.getElementById('bottomNav').style.display='grid';
+    if(navigate){
+      goTo('dashboard'); switchTab('dashboard');
+      showToast(`✅ Bem-vindo de volta, ${(SESSION.name||'').split(' ')[0]}!`,'ok');
+    }
+    checkEvaluationDue(prof.created_at);
+    return;
   }
+  if(navigate){ obStep=0; renderStep(); goTo('onboarding'); }
 }
 
 function applyProfile(prof){
@@ -2091,23 +2162,123 @@ function onPhotoSel(e){
   r.readAsDataURL(f);
 }
 
-async function analyzePhoto(){
-  const plan=SESSION?.plan||'basico';
-  if(plan==='basico'){showToast('📸 Avaliação por foto disponível no Plano Avançado','err');return;}
-  if(!photoUrl)return;
-  const btn=document.getElementById('btnAnalyze');btn.disabled=true;btn.innerHTML='⏳ ANALISANDO...';
-  document.getElementById('analysisResult').innerHTML=`<div class="ar"><div class="ar-loading"><div class="ar-spin"></div><div class="ar-lbl">Analisando composição corporal...</div></div></div>`;
-  try{
-    const base64=photoUrl.split(',')[1],mt=photoUrl.split(';')[0].split(':')[1];
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:base64}},{type:'text',text:`Personal trainer: analise esta foto. Objetivo: ${P.goal}, Peso: ${P.w}kg, Meta: ${P.gw}kg. Responda APENAS JSON: {"score_fisico":"1-10","nivel":"Iniciante/Intermediário/Avançado","percentual_gordura_estimado":"ex:18-22%","pontos_fortes":["p1","p2","p3"],"areas_foco":["a1","a2"],"recomendacao_treino":"parágrafo","recomendacao_dieta":"parágrafo","mensagem_motivacional":"frase"}`}]}]})});
-    const data=await resp.json();
-    const txt=(data.content||[]).map(c=>c.text||'').join('');
-    let a;try{a=JSON.parse(txt.replace(/```json|```/g,'').trim());}catch{a=null;}
-    if(a){await saveEval(a);renderAnalysis(a);}
-    else document.getElementById('analysisResult').innerHTML=`<div class="ar fade"><div class="ar-title">📊 ANÁLISE</div><div style="font-size:.8rem;line-height:1.6">${txt}</div></div>`;
-  }catch(e){document.getElementById('analysisResult').innerHTML=`<div class="ar"><div class="ar-title" style="color:var(--accent2)">❌ Erro</div><div style="font-size:.8rem">Verifique sua conexão.</div></div>`;}
-  btn.disabled=false;btn.innerHTML='🔍 ANALISAR NOVAMENTE';
+// Quiz state
+const quizAnswers={};
+function selQuiz(q,val,el){
+  quizAnswers[q]=val;
+  el.closest('.quiz-opts').querySelectorAll('.qopt').forEach(e=>{
+    e.classList.remove('sel');
+    e.style.borderColor='var(--border)';e.style.color='var(--muted)';e.style.background='var(--card)';
+  });
+  el.classList.add('sel');
+  el.style.borderColor='var(--accent)';el.style.color='var(--accent)';el.style.background='rgba(0,229,160,.08)';
 }
+
+async function runSelfAssessment(){
+  const required=['q1','q2','q3','q4','q5'];
+  const missing=required.filter(q=>!quizAnswers[q]);
+  if(missing.length>0){showToast('Responda todas as perguntas primeiro','err');return;}
+
+  const btn=document.getElementById('btnAnalyze');
+  btn.disabled=true;btn.innerHTML='⏳ Calculando...';
+
+  // Score based on answers
+  const scoreMap={
+    q1:{Baixa:1,Média:2,Alta:3},
+    q2:{Ruim:1,Regular:2,Bom:3},
+    q3:{Pouco:1,Parcial:2,Sim:3},
+    q4:{'Sem mudança':1,Melhorando:2,'Muito melhor':3},
+    q5:{Pouco:1,Regular:2,Muito:3}
+  };
+  const total=required.reduce((s,q)=>s+(scoreMap[q][quizAnswers[q]]||1),0);
+  const maxScore=15;
+  const pct=Math.round((total/maxScore)*100);
+  const score=Math.max(1,Math.min(10,Math.round(total/maxScore*10)));
+
+  // Determine level
+  const nivel=total<=7?'Iniciante':total<=11?'Intermediário':'Avançado';
+  const goal=P.goal||U.goal||'Emagrecer';
+
+  // Generate personalized feedback based on answers + goal
+  const tips={
+    q1:{Baixa:'Aumente a ingestão de carboidratos no pré-treino e garanta 7-8h de sono para recuperar a energia.',Média:'Tente treinar nos horários em que você se sente mais disposto. Manhã tende a ter melhor performance.',Alta:'Ótimo! Aproveite essa energia e adicione uma série extra nos exercícios compostos.'},
+    q2:{Ruim:'O sono é onde o músculo cresce. Priorize dormir cedo — sem isso, nenhum treino compensa.',Regular:'Tente criar uma rotina de horário fixo para dormir. Melhora em 2-3 semanas.',Bom:'Perfeito. Continue assim — o descanso é metade do resultado.'},
+    q3:{Pouco:'A dieta responde por 70% dos resultados. Tente cumprir pelo menos as refeições principais.',Parcial:'Você já está no caminho. Foque em acertar o café da manhã e o pós-treino primeiro.',Sim:'Excelente disciplina! Os resultados vão aparecer mais rápido por causa disso.'},
+    q4:{'Sem mudança':'Continue firme — mudanças visuais levam 4-6 semanas para aparecer no espelho. O progresso está acontecendo.',Melhorando:'Está no caminho certo! Tire uma foto de frente toda semana para comparar.',  'Muito melhor':'Parabéns! Compartilhe sua evolução na Comunidade para motivar outros.'},
+    q5:{Pouco:'Beba 35ml por kg de peso por dia. Desidratação reduz performance em até 20%.',Regular:'Aumente um pouco — especialmente no dia de treino. Meta: 2,5-3L.',Muito:'Hidratação ideal! Isso acelera a recuperação e melhora a definição.'}
+  };
+
+  const fortes=[];
+  const focos=[];
+  if(quizAnswers.q1==='Alta') fortes.push('Disposição e energia excelentes nos treinos');
+  if(quizAnswers.q2==='Bom') fortes.push('Sono e recuperação em dia');
+  if(quizAnswers.q3==='Sim') fortes.push('Disciplina alimentar acima da média');
+  if(quizAnswers.q4==='Muito melhor') fortes.push('Evolução corporal visível e consistente');
+  if(quizAnswers.q5==='Muito') fortes.push('Hidratação ideal para performance');
+  if(quizAnswers.q1==='Baixa') focos.push('Melhorar disposição e pré-treino');
+  if(quizAnswers.q2==='Ruim') focos.push('Priorizar qualidade do sono');
+  if(quizAnswers.q3==='Pouco') focos.push('Seguir mais a dieta recomendada');
+  if(quizAnswers.q4==='Sem mudança') focos.push('Consistência por mais algumas semanas');
+  if(quizAnswers.q5==='Pouco') focos.push('Aumentar consumo de água diário');
+
+  if(fortes.length===0) fortes.push('Você deu o primeiro passo — isso já é muito!','Comprometimento em buscar evolução');
+  if(focos.length===0) focos.push('Manter a consistência atual');
+
+  // Goal-specific recommendations
+  const recTreino={
+    Emagrecer:`Com pontuação ${score}/10, foque em manter a frequência dos treinos e adicionar 20min de cardio após a musculação. ${tips.q1[quizAnswers.q1]}`,
+    'Ganhar Massa':`Com pontuação ${score}/10, priorize a sobrecarga progressiva — aumente 2,5kg a cada 2 semanas. ${tips.q2[quizAnswers.q2]}`,
+    Manter:`Com pontuação ${score}/10, mantenha a regularidade e varie os estímulos a cada 4 semanas para evitar estagnação. ${tips.q3[quizAnswers.q3]}`
+  };
+  const recDieta={
+    Emagrecer:`${tips.q3[quizAnswers.q3]} Foque em proteínas em todas as refeições e reduza carboidratos à noite.`,
+    'Ganhar Massa':`${tips.q3[quizAnswers.q3]} Garanta surplus calórico de 300-500kcal e whey no pós-treino.`,
+    Manter:`${tips.q3[quizAnswers.q3]} Mantenha as calorias da dieta e ajuste conforme a balança semanalmente.`
+  };
+  const motivacao=[
+    'Cada treino é um depósito na sua conta de saúde. Continue investindo!',
+    'A transformação não é linear, mas quem persiste sempre chega lá.',
+    'Você não está apenas mudando seu corpo, está mudando seus hábitos para sempre.',
+    'Os resultados aparecem para quem não desiste nos dias difíceis.',
+    'Seu corpo hoje é o reflexo dos seus hábitos de ontem. Continue melhorando!'
+  ];
+
+  const result={
+    score_fisico:String(score),
+    nivel,
+    percentual_gordura_estimado: goal==='Emagrecer'?'Em processo de redução':goal==='Ganhar Massa'?'Foco em hipertrofia':'Manutenção',
+    pontos_fortes:fortes,
+    areas_foco:focos,
+    recomendacao_treino: recTreino[goal]||recTreino['Manter'],
+    recomendacao_dieta: recDieta[goal]||recDieta['Manter'],
+    mensagem_motivacional: motivacao[Math.floor(Math.random()*motivacao.length)],
+    agua_tip: tips.q5[quizAnswers.q5],
+    sono_tip: tips.q2[quizAnswers.q2]
+  };
+
+  // Save to DB
+  await saveEval(result);
+
+  // Save photo if provided
+  if(photoUrl && sb && SESSION){
+    try{
+      await sb.from('completed_workouts').insert([{
+        user_id:SESSION.userId,
+        day_name:'Avaliação Física',
+        muscle_group:'Auto-avaliação',
+        week_start:getMonday(),
+        photo_base64:photoUrl.substring(0,50000),
+        note:`Score: ${score}/10 — ${nivel}`
+      }]);
+    }catch(e){}
+  }
+
+  renderAnalysis(result);
+  btn.disabled=false; btn.innerHTML='📊 REFAZER AVALIAÇÃO';
+}
+
+// Keep analyzePhoto as alias
+function analyzePhoto(){ runSelfAssessment(); }
 
 function renderAnalysis(a){
   document.getElementById('analysisResult').innerHTML=`<div class="ar fade"><div class="ar-title">📊 RESULTADO DA ANÁLISE</div><div class="score-grid"><div class="si"><div class="sv2 g">${a.score_fisico}/10</div><div class="sl2">Score</div></div><div class="si"><div class="sv2 b">${a.nivel}</div><div class="sl2">Nível</div></div><div class="si"><div class="sv2 o">${a.percentual_gordura_estimado}</div><div class="sl2">% Gordura</div></div><div class="si"><div class="sv2 g">${P.goal||'—'}</div><div class="sl2">Objetivo</div></div></div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:7px;font-weight:700">💪 PONTOS FORTES</div>${(a.pontos_fortes||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent)">✓</span><span>${p}</span></div>`).join('')}</div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent2);margin-bottom:7px;font-weight:700">🎯 FOCO</div>${(a.areas_foco||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent2)">→</span><span>${p}</span></div>`).join('')}</div><div style="background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:5px;font-weight:700">🏋️ TREINO</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_treino}</div></div><div style="background:rgba(61,155,255,.06);border:1px solid rgba(61,155,255,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent3);margin-bottom:5px;font-weight:700">🥗 DIETA</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_dieta}</div></div><div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:9px;padding:11px;text-align:center;font-size:.82rem;font-weight:600;color:var(--gold)">⭐ ${a.mensagem_motivacional}</div></div>`;
