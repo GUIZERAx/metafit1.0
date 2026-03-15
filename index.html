@@ -339,9 +339,9 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 <div id="splash" class="screen active">
   <div class="gr"></div><div class="gr"></div><div class="gr"></div>
   <div class="splash-in">
-    <span class="s-tag">MELHORE SEU CORPO · SUPERE SEUS LIMITES</span>
+    <span class="s-tag">TRANSFORME SEU CORPO · ALCANCE SEUS OBJETIVOS</span>
     <h1>META FIT</h1>
-    <p>Treinos e dieta personalizados com IA</p>
+    <p>Treinos e dieta 100% personalizados para você</p>
     <div class="s-btns">
       <button class="btn-s-main" id="btnRegister" onclick="goTo('register')">CRIAR CONTA</button>
       <button class="btn-s-sec" id="btnLogin" onclick="goTo('login')">JÁ TENHO CONTA</button>
@@ -374,13 +374,10 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
       <div class="auth-title">ATIVAR PLANO</div>
       <div class="auth-sub">Insira o token recebido após a compra</div>
       <div class="token-info">
-        <strong>🎟️ Tokens de teste disponíveis:</strong>
-        TESTE-7DIAS-AVANCADO<br>
-        TESTE-7DIAS-BASICO<br>
-        METAFIT-AVANCADO-VITALICIO<br>
-        METAFIT-BASICO-MENSAL
+        <strong>🎟️ Como ativar seu plano:</strong>
+        Após a compra você receberá um código de ativação por e-mail. Insira-o abaixo para liberar seu acesso completo.
       </div>
-      <div class="auth-fg"><label class="auth-label">Seu token de acesso</label><input class="auth-input" id="act-token" type="text" placeholder="Ex: METAFIT-AVANCADO-VITALICIO" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="auth-fg"><label class="auth-label">Seu token de acesso</label><input class="auth-input" id="act-token" type="text" placeholder="Cole seu código de ativação aqui" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>
       <button class="btn-auth" id="btnActivate" onclick="doActivate()">ATIVAR TOKEN</button>
       <div class="auth-link" style="margin-top:10px;font-size:.74rem">Após ativar, você será levado ao seu plano personalizado</div>
     </div>
@@ -454,8 +451,8 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
       <div class="ai-step" id="s2"><div class="as-ico">2</div>Calculando IMC e calorias ideais</div>
       <div class="ai-step" id="s3"><div class="as-ico">3</div>Criando divisão semanal</div>
       <div class="ai-step" id="s4"><div class="as-ico">4</div>Gerando treinos por dia</div>
-      <div class="ai-step" id="s5"><div class="as-ico">5</div>Salvando no Supabase</div>
-      <div class="ai-step" id="s6"><div class="as-ico">6</div>Finalizando Meta Fit</div>
+      <div class="ai-step" id="s5"><div class="as-ico">5</div>Finalizando seu plano personalizado</div>
+      <div class="ai-step" id="s6"><div class="as-ico">6</div>Tudo pronto! Bem-vindo ao Meta Fit</div>
     </div>
   </div>
 </div>
@@ -463,7 +460,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 <!-- DASHBOARD -->
 <div id="dashboard" class="screen">
   <div class="dash-top">
-    <div class="dash-greet">BOM DIA,</div>
+    <div class="dash-greet" id="dashGreet">BOM DIA,</div>
     <div class="dash-name-row">
       <div id="dashAvWrap"></div>
       <div class="dash-name" id="dashNameTxt">— <span>💪</span></div>
@@ -585,7 +582,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     <div class="prof-name" id="profName">—</div>
     <div class="prof-badge" id="profBadge">—</div>
   </div>
-  <div class="supa-bar"><div class="suba-dot" id="supaDot"></div><span id="supaText">Conectado ao Supabase</span></div>
+  
   <div class="info-grid">
     <div class="ic"><div class="iv g" id="pi1">—</div><div class="il">Peso Atual</div></div>
     <div class="ic"><div class="iv b" id="pi2">—</div><div class="il">Meta</div></div>
@@ -598,11 +595,11 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     <div class="hist-list" id="histList"><div style="color:var(--muted);font-size:.78rem;padding:6px 0">Carregando...</div></div>
   </div>
   <div style="padding:0 20px 10px">
-    <button style="width:100%;background:rgba(255,92,56,.1);border:1px solid var(--accent2);color:var(--accent2);font-family:'Outfit';font-weight:700;font-size:.84rem;padding:12px;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;" onclick="switchTab('photo-eval')">📸 AVALIAÇÃO POR FOTO COM IA</button>
+    <button style="width:100%;background:rgba(255,92,56,.1);border:1px solid var(--accent2);color:var(--accent2);font-family:'Outfit';font-weight:700;font-size:.84rem;padding:12px;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;" onclick="switchTab('photo-eval')">📸 AVALIAÇÃO POR FOTO</button>
   </div>
   <div class="eval-card">
     <div class="eval-t">⏱️ AVALIAÇÃO MENSAL</div>
-    <div class="eval-sub">Após 30 dias a IA reanalisa e atualiza treinos e dieta.</div>
+    <div class="eval-sub">Após 30 dias, atualize seus dados para ajustar treinos e dieta à sua evolução.</div>
     <button class="btn-eval" onclick="startEval()">REFAZER AVALIAÇÃO</button>
   </div>
   <button class="btn-logout" onclick="doLogout()">🚪 Sair da conta</button>
@@ -612,7 +609,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 <div id="photo-eval" class="screen">
   <div class="screen-hdr">
     <div class="back-btn" onclick="switchTab('profile')">←</div>
-    <div class="shdr-info"><h2>AVALIAÇÃO</h2><p>Análise corporal por IA · salva no banco</p></div>
+    <div class="shdr-info"><h2>AVALIAÇÃO</h2><p>Análise corporal personalizada</p></div>
   </div>
   <div class="pe-body">
     <div class="photo-drop" id="photoDrop" onclick="triggerPhotoUp()">
@@ -625,9 +622,9 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
       <div class="pt-item"><span>💡</span>Boa iluminação, prefira luz natural</div>
       <div class="pt-item"><span>👕</span>Roupas justas ou shorts</div>
       <div class="pt-item"><span>📐</span>Corpo inteiro, frente ou de lado</div>
-      <div class="pt-item"><span>💾</span>Resultado salvo automaticamente no Supabase</div>
+      <div class="pt-item"><span>💾</span>Resultado salvo automaticamente no seu perfil</div>
     </div>
-    <button class="btn-analyze" id="btnAnalyze" onclick="analyzePhoto()" disabled>🔍 ANALISAR COM IA</button>
+    <button class="btn-analyze" id="btnAnalyze" onclick="analyzePhoto()" disabled>🔍 ANALISAR</button>
     <div id="analysisResult"></div>
   </div>
 </div>
@@ -842,7 +839,7 @@ async function refreshProfileFromDB(navigate=true){
       .order('created_at',{ascending:false})
       .limit(1);
 
-    if(error){ console.warn('DB error:', error.message); }
+    if(error){  }
     dbOK = true;
 
     const prof = profs && profs.length > 0 ? profs[0] : null;
@@ -858,8 +855,7 @@ async function refreshProfileFromDB(navigate=true){
       return;
     }
   }catch(e){
-    console.warn('refreshProfileFromDB:', e.message);
-    dbOK = true;
+        dbOK = true;
   }
 
   // No profile found anywhere — go to onboarding only if navigating
@@ -912,7 +908,7 @@ function showEvalModal(days){
     <div class="modal-box" style="border-color:var(--gold)">
       <div class="mb-icon">📊</div>
       <div class="mb-title" style="color:var(--gold)">AVALIAÇÃO MENSAL</div>
-      <div class="mb-sub">Já se passaram <strong style="color:var(--gold)">${days} dias</strong> desde seu último plano!<br><br>Hora de atualizar seu peso e refazer a avaliação para que a IA ajuste seus treinos e dieta de acordo com sua evolução.</div>
+      <div class="mb-sub">Já se passaram <strong style="color:var(--gold)">${days} dias</strong> desde seu último plano!<br><br>Hora de atualizar seu peso e refazer a avaliação para ajustarmos seus treinos e dieta de acordo com sua evolução.</div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
         <div style="background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);border-radius:9px;padding:11px;font-size:.78rem;color:var(--muted);line-height:1.5">
           <strong style="color:var(--gold);display:block;margin-bottom:4px">🎯 O que vai ser atualizado:</strong>
@@ -1021,7 +1017,7 @@ async function submitMonthlyEval(){
       await sb.from('profiles')
         .update({weight:newWeight, goal:newGoal, calories:cal, protein:prot, carbs:carb, fat:fat, imc:parseFloat(P.imc)})
         .eq('user_id', SESSION.userId);
-    }catch(e){ console.error(e); }
+    }catch(e){  }
   }
 
   // Mark eval done
@@ -1092,10 +1088,9 @@ async function saveProfile(){
     localStorage.setItem('mf_session', JSON.stringify(SESSION));
     localStorage.setItem(`mf_last_eval_${SESSION.userId}`, new Date().toISOString());
     dbOK = true;
-    showToast('💾 Perfil salvo!','ok');
+    showToast('✅ Perfil salvo!','ok');
   }catch(e){
-    console.error('saveProfile error:', e);
-    // Save to cache anyway so user doesn't lose data
+        // Save to cache anyway so user doesn't lose data
     localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify({
       user_id:SESSION.userId, name:U.name, age:parseInt(U.age)||0,
       weight:parseFloat(U.weight)||0, height:parseFloat(U.height)||0,
@@ -1120,8 +1115,8 @@ async function saveWorkout(idx, photo=null, note=''){
       note:note||null
     }]);
     if(error)throw error;
-    showToast('💾 Treino salvo no banco!','ok');
-  }catch(e){console.error(e);}
+    showToast('✅ Treino registrado!','ok');
+  }catch(e){}
 }
 
 async function loadWorkouts(){
@@ -1130,7 +1125,7 @@ async function loadWorkouts(){
     const {data}=await sb.from('completed_workouts').select('*')
       .eq('user_id',SESSION.userId).eq('week_start',getMonday());
     completedDays=new Set((data||[]).map(r=>r.day_index));
-  }catch(e){console.error(e);}
+  }catch(e){}
 }
 
 async function loadHistory(){
@@ -1144,7 +1139,7 @@ async function loadHistory(){
       const dt=new Date(r.created_at),ds=dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
       return`<div class="hist-item"><div class="hi-dot"></div><div class="hi-info"><div class="hi-date">${ds} — ${r.day_name}</div><div class="hi-muscle">${r.muscle_group}</div></div><div class="hi-badge">✓</div></div>`;
     }).join('');
-  }catch(e){console.error(e);}
+  }catch(e){}
 }
 
 async function saveEval(a){
@@ -1157,8 +1152,8 @@ async function saveEval(a){
       recomendacao_treino:a.recomendacao_treino,recomendacao_dieta:a.recomendacao_dieta,
       mensagem_motivacional:a.mensagem_motivacional
     }]);
-    showToast('💾 Avaliação salva no Supabase!','ok');
-  }catch(e){console.error(e);}
+    showToast('✅ Avaliação salva no seu perfil!','ok');
+  }catch(e){}
 }
 
 function getMonday(){const d=new Date();const day=d.getDay();d.setDate(d.getDate()-day+(day===0?-6:1));return d.toISOString().split('T')[0];}
@@ -1172,7 +1167,7 @@ function toggleDays(){
 }
 
 async function loadAdminData(){
-  if(!sb||!dbOK){showToast('Sem conexão com Supabase','err');return;}
+  if(!sb||!dbOK){showToast('Sem conexão. Verifique sua internet.','err');return;}
   try{
     const [{data:toks},{data:users}]=await Promise.all([
       sb.from('tokens').select('*').order('created_at',{ascending:false}),
@@ -1275,7 +1270,7 @@ const STEPS=[
   {title:'Seu\n<span>OBJETIVO</span>',sub:'O que você quer alcançar?',fields:[{type:'opts',key:'goal',cols:3,opts:[{icon:'🔥',label:'Emagrecer',desc:'Queimar gordura'},{icon:'💪',label:'Ganhar Massa',desc:'Hipertrofia'},{icon:'⚖️',label:'Manter',desc:'Definição'}]}]},
   {title:'Tipo de\n<span>TREINO</span>',sub:'Onde você vai se exercitar?',fields:[{type:'opts',key:'trainType',cols:2,opts:[{icon:'🏠',label:'Em Casa',desc:'Sem equipamentos'},{icon:'🏋️',label:'Academia',desc:'Equipamentos completos'}]}]},
   {title:'Dias de\n<span>TREINO</span>',sub:'Quantos dias por semana?',fields:[{type:'opts',key:'trainDays',cols:3,opts:[{icon:'3️⃣',label:'3 dias',desc:'Seg/Qua/Sex'},{icon:'4️⃣',label:'4 dias',desc:'Seg/Ter/Qui/Sex'},{icon:'5️⃣',label:'5 dias',desc:'Seg a Sex'}]}]},
-  {title:'Treina no\n<span>SÁBADO?</span>',sub:'Se sim, a IA inclui treino extra. Domingo = descanso.',fields:[{type:'toggle',key:'trainSaturday',label:'Treinar no Sábado',sub:'Domingo será descanso total'}]},
+  {title:'Treina no\n<span>SÁBADO?</span>',sub:'Se sim, incluímos um treino extra no sábado. Domingo = descanso.',fields:[{type:'toggle',key:'trainSaturday',label:'Treinar no Sábado',sub:'Domingo será descanso total'}]},
   {title:'Plano\n<span>ALIMENTAR</span>',sub:'Qual tipo de dieta você prefere?',fields:[{type:'opts',key:'dietType',cols:2,opts:[{icon:'🥩',label:'Com Suplementos',desc:'Whey, creatina, BCAA'},{icon:'🥦',label:'Sem Suplementos',desc:'100% natural'}]}]},
 ];
 
@@ -1345,6 +1340,10 @@ function fillAll(){fillDash();fillTraining();fillDiet();fillProfile();}
 
 function fillDash(){
   const name=(SESSION?.name||U.name||'Atleta').toUpperCase().split(' ')[0];
+  const hr=new Date().getHours();
+  const greet=hr<12?'BOM DIA,':hr<18?'BOA TARDE,':'BOA NOITE,';
+  const grEl=document.getElementById('dashGreet');
+  if(grEl)grEl.textContent=greet;
   document.getElementById('dashNameTxt').innerHTML=`${name} <span>💪</span>`;
   const w=document.getElementById('dashAvWrap');
   if(avatarUrl)w.innerHTML=`<img class="dash-av" src="${avatarUrl}">`;
@@ -1412,7 +1411,7 @@ function showModal(muscle,tip){
   for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.cssText=`left:${Math.random()*100}%;background:${colors[i%5]};width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;animation-delay:${Math.random()}s;animation-duration:${2+Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'2px'}`;cw.appendChild(p);}
   document.body.appendChild(cw);
   const ov=document.createElement('div');ov.className='modal-overlay';
-  ov.innerHTML=`<div class="modal-box"><div class="mb-icon">🏆</div><div class="mb-title">TREINO FEITO!</div><div class="mb-sub">Você completou <strong>${muscle}</strong>! Salvo no Supabase.</div><div class="mb-tip"><strong>💡 Para evoluir mais:</strong>${tip}</div><button class="btn-close-m" onclick="this.closest('.modal-overlay').remove()">CONTINUAR 💪</button></div>`;
+  ov.innerHTML=`<div class="modal-box"><div class="mb-icon">🏆</div><div class="mb-title">TREINO FEITO!</div><div class="mb-sub">Você completou <strong>${muscle}</strong> hoje! Continue assim!</div><div class="mb-tip"><strong>💡 Para evoluir mais:</strong>${tip}</div><button class="btn-close-m" onclick="this.closest('.modal-overlay').remove()">CONTINUAR 💪</button></div>`;
   document.body.appendChild(ov);
   setTimeout(()=>cw.remove(),3500);
 }
@@ -1616,7 +1615,7 @@ function showCompletionModal(muscle, tip, idx, photo){
       <div class="mb-icon">🏆</div>
       <div class="mb-title">TREINO FEITO!</div>
       ${photo?`<img src="${photo}" style="width:100%;max-height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px">`:''}
-      <div class="mb-sub">Você completou <strong>${muscle}</strong>! Salvo no banco.</div>
+      <div class="mb-sub">Você completou <strong>${muscle}</strong> hoje! Continue assim!</div>
       <div class="mb-tip"><strong>💡 Para evoluir mais:</strong> ${tip}</div>
       <div style="display:flex;gap:8px">
         <button onclick="this.closest('.modal-overlay').remove()" class="btn-close-m" style="flex:1">CONTINUAR 💪</button>
@@ -1658,7 +1657,7 @@ async function loadCommunity(){
   }catch(e){
     feed.innerHTML=`<div style="text-align:center;padding:30px">
       <div style="font-size:2rem;margin-bottom:8px">⚠️</div>
-      <div style="color:var(--muted);font-size:.82rem">Execute o SQL patch v3 no Supabase para criar as tabelas da comunidade</div>
+      <div style="color:var(--muted);font-size:.82rem">Comunidade temporariamente indisponível. Tente novamente em instantes.</div>
     </div>`;
   }
 }
@@ -1821,7 +1820,7 @@ async function toggleLike(postId,btn){
       await sb.from('community_posts').update({likes:(post?.likes||0)+1}).eq('id',postId);
     }
     await loadCommunity();
-  }catch(e){console.error(e);}
+  }catch(e){}
 }
 
 async function showComments(postId){
@@ -1925,7 +1924,7 @@ async function loadChat(){
     if(chatPolling) clearInterval(chatPolling);
     chatPolling = setInterval(pollChat, 5000);
   }catch(e){
-    el.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:20px">Execute o SQL patch v3 para criar a tabela de chat</div>`;
+    el.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:20px">Chat temporariamente indisponível. Tente novamente.</div>`;
   }
 }
 
@@ -2070,7 +2069,7 @@ function fillProfile(){
   document.getElementById('pi1').textContent=P.w+'kg';document.getElementById('pi2').textContent=P.gw+'kg';document.getElementById('pi3').textContent=P.imc;document.getElementById('pi4').textContent=P.cal;
   const dot=document.getElementById('supaDot'),txt=document.getElementById('supaText');
   if(dot)dot.className='suba-dot'+(dbOK?'':' off');
-  if(txt)txt.textContent=dbOK?`✅ Supabase · ${SESSION?.email||''}`:'❌ Offline — execute metafit_schema.sql';
+  if(txt)txt.textContent='';
   if(P.weekPlan)document.getElementById('wpGrid').innerHTML=P.weekPlan.map((d,i)=>{const isDone=completedDays.has(i);return`<div class="wps-row ${isDone?'dr':''}"><div class="wps-day">${DAYS_S[i]}</div><div class="wps-muscle">${d.g==='rest'?'😴 Descanso':d.m}</div><div class="wps-b ${isDone?'done':d.g==='rest'?'rest':P.isHome?'home':'gym'}">${isDone?'✓ Feito':d.g==='rest'?'OFF':P.isHome?'Casa':'Gym'}</div></div>`;}).join('');
   loadHistory();
 }
@@ -2111,7 +2110,7 @@ async function analyzePhoto(){
 }
 
 function renderAnalysis(a){
-  document.getElementById('analysisResult').innerHTML=`<div class="ar fade"><div class="ar-title">📊 RESULTADO — SALVO NO BANCO</div><div class="score-grid"><div class="si"><div class="sv2 g">${a.score_fisico}/10</div><div class="sl2">Score</div></div><div class="si"><div class="sv2 b">${a.nivel}</div><div class="sl2">Nível</div></div><div class="si"><div class="sv2 o">${a.percentual_gordura_estimado}</div><div class="sl2">% Gordura</div></div><div class="si"><div class="sv2 g">${P.goal||'—'}</div><div class="sl2">Objetivo</div></div></div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:7px;font-weight:700">💪 PONTOS FORTES</div>${(a.pontos_fortes||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent)">✓</span><span>${p}</span></div>`).join('')}</div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent2);margin-bottom:7px;font-weight:700">🎯 FOCO</div>${(a.areas_foco||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent2)">→</span><span>${p}</span></div>`).join('')}</div><div style="background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:5px;font-weight:700">🏋️ TREINO</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_treino}</div></div><div style="background:rgba(61,155,255,.06);border:1px solid rgba(61,155,255,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent3);margin-bottom:5px;font-weight:700">🥗 DIETA</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_dieta}</div></div><div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:9px;padding:11px;text-align:center;font-size:.82rem;font-weight:600;color:var(--gold)">⭐ ${a.mensagem_motivacional}</div></div>`;
+  document.getElementById('analysisResult').innerHTML=`<div class="ar fade"><div class="ar-title">📊 RESULTADO DA ANÁLISE</div><div class="score-grid"><div class="si"><div class="sv2 g">${a.score_fisico}/10</div><div class="sl2">Score</div></div><div class="si"><div class="sv2 b">${a.nivel}</div><div class="sl2">Nível</div></div><div class="si"><div class="sv2 o">${a.percentual_gordura_estimado}</div><div class="sl2">% Gordura</div></div><div class="si"><div class="sv2 g">${P.goal||'—'}</div><div class="sl2">Objetivo</div></div></div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:7px;font-weight:700">💪 PONTOS FORTES</div>${(a.pontos_fortes||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent)">✓</span><span>${p}</span></div>`).join('')}</div><div style="margin:10px 0"><div style="font-size:.66rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent2);margin-bottom:7px;font-weight:700">🎯 FOCO</div>${(a.areas_foco||[]).map(p=>`<div style="display:flex;gap:6px;margin-bottom:4px;font-size:.78rem"><span style="color:var(--accent2)">→</span><span>${p}</span></div>`).join('')}</div><div style="background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:5px;font-weight:700">🏋️ TREINO</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_treino}</div></div><div style="background:rgba(61,155,255,.06);border:1px solid rgba(61,155,255,.15);border-radius:9px;padding:11px;margin:8px 0"><div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent3);margin-bottom:5px;font-weight:700">🥗 DIETA</div><div style="font-size:.78rem;line-height:1.6">${a.recomendacao_dieta}</div></div><div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:9px;padding:11px;text-align:center;font-size:.82rem;font-weight:600;color:var(--gold)">⭐ ${a.mensagem_motivacional}</div></div>`;
 }
 
 // ═══════════════════════════════════
