@@ -339,14 +339,13 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 <div id="splash" class="screen active">
   <div class="gr"></div><div class="gr"></div><div class="gr"></div>
   <div class="splash-in">
-    <span class="s-tag">IA + Supabase</span>
+    <span class="s-tag">MELHORE SEU CORPO · SUPERE SEUS LIMITES</span>
     <h1>META FIT</h1>
-    <p>Seu corpo. Seu plano. Sua evolução.</p>
+    <p>Treinos e dieta personalizados com IA</p>
     <div class="s-btns">
       <button class="btn-s-main" id="btnRegister" onclick="goTo('register')">CRIAR CONTA</button>
       <button class="btn-s-sec" id="btnLogin" onclick="goTo('login')">JÁ TENHO CONTA</button>
     </div>
-
   </div>
 </div>
 
@@ -517,20 +516,53 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 
 <!-- COMMUNITY -->
 <div id="community" class="screen">
-  <div class="screen-hdr" style="padding-bottom:12px">
+  <div class="screen-hdr" style="padding-bottom:10px">
     <div class="back-btn" onclick="switchTab('dashboard')">←</div>
     <div class="shdr-info"><h2>COMUNIDADE</h2><p>Meta Fit · Compartilhe sua evolução</p></div>
-    <button onclick="showNewPost()" style="background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.75rem;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;flex-shrink:0;margin-left:auto">+ POST</button>
+    <button onclick="showNewPost()" style="background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.75rem;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;flex-shrink:0;margin-left:auto" id="btnNewPost">+ POST</button>
   </div>
-  <!-- FILTER TABS -->
-  <div style="display:flex;gap:6px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none">
-    <div class="comm-ftab active" onclick="filterComm('all',this)" style="flex-shrink:0;background:rgba(0,229,160,.1);border:1px solid var(--accent);color:var(--accent);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">Todos</div>
-    <div class="comm-ftab" onclick="filterComm('workout',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">🏋️ Treinos</div>
-    <div class="comm-ftab" onclick="filterComm('shape',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">📸 Shape</div>
-    <div class="comm-ftab" onclick="filterComm('post',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">💬 Dicas</div>
+  <!-- MAIN TABS: Feed / Chat -->
+  <div style="display:flex;gap:0;padding:0 20px;margin-bottom:0;border-bottom:1px solid var(--border)">
+    <div class="comm-main-tab active" id="cmtab-feed" onclick="switchCommMain('feed')"
+      style="flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--accent);border-bottom:2px solid var(--accent);transition:all .2s;text-transform:uppercase;letter-spacing:1px">
+      📸 Feed
+    </div>
+    <div class="comm-main-tab" id="cmtab-chat" onclick="switchCommMain('chat')"
+      style="flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:1px">
+      💬 Chat
+    </div>
   </div>
-  <div id="commFeed" style="padding:0 20px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px">
-    <div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Carregando posts...</div>
+
+  <!-- FEED -->
+  <div id="comm-feed-panel" style="display:flex;flex-direction:column;flex:1;overflow-y:auto">
+    <!-- FILTER TABS -->
+    <div style="display:flex;gap:6px;padding:12px 20px;overflow-x:auto;scrollbar-width:none">
+      <div class="comm-ftab active" onclick="filterComm('all',this)" style="flex-shrink:0;background:rgba(0,229,160,.1);border:1px solid var(--accent);color:var(--accent);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">Todos</div>
+      <div class="comm-ftab" onclick="filterComm('workout',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">🏋️ Treinos</div>
+      <div class="comm-ftab" onclick="filterComm('shape',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">📸 Shape</div>
+      <div class="comm-ftab" onclick="filterComm('post',this)" style="flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;letter-spacing:1px">💬 Dicas</div>
+    </div>
+    <div id="commFeed" style="padding:0 20px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px">
+      <div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Carregando posts...</div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="comm-chat-panel" style="display:none;flex-direction:column;flex:1;min-height:0">
+    <div id="chatMessages" style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:8px;min-height:200px;max-height:calc(100vh - 260px)">
+      <div style="text-align:center;color:var(--muted);font-size:.78rem;padding:16px">Carregando chat...</div>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:8px;align-items:flex-end;padding-bottom:80px">
+      <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:20px;display:flex;align-items:center;padding:8px 14px;gap:8px">
+        <textarea id="chatInput" placeholder="Mensagem para a comunidade..." rows="1"
+          style="flex:1;background:none;border:none;color:var(--text);font-family:'Outfit';font-size:.88rem;outline:none;resize:none;max-height:80px;line-height:1.4"
+          oninput="autoResizeChat(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+        <label style="cursor:pointer;color:var(--muted);font-size:1.1rem" title="Enviar foto">
+          📎<input type="file" accept="image/*" style="display:none" onchange="onChatPhoto(event)">
+        </label>
+      </div>
+      <button onclick="sendChat()" style="width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">➤</button>
+    </div>
   </div>
 </div>
 
@@ -628,32 +660,40 @@ let completedDays=new Set(), avatarUrl=null, photoUrl=null, curTrainDay=0;
 //  INIT
 // ═══════════════════════════════════
 window.addEventListener('load', async()=>{
+  // ── Always start at splash — never skip it ──
+  goTo('splash');
+
+  // Init Supabase quietly
   try{
     sb = supabase.createClient(SURL, SKEY);
-    const {error} = await sb.from('tokens').select('id').limit(1);
-    if(error && error.code!=='PGRST116') throw error;
-    dbOK=true;
-    document.getElementById('dbStatus').innerHTML='<div class="blink-dot"></div>✅ Supabase conectado!';
+    await sb.from('app_users').select('id').limit(1);
+    dbOK = true;
   }catch(e){
-    dbOK=false;
-    document.getElementById('dbStatus').innerHTML='<div class="blink-dot" style="background:var(--accent2)"></div>⚠️ Execute o SQL no Supabase primeiro';
-    showToast('⚠️ Execute o metafit_schema.sql no Supabase','err');
+    dbOK = (e.message && !e.message.includes('fetch'));
   }
-  // check saved session
+
+  // Check if user has a saved session
   const saved = localStorage.getItem('mf_session');
-  if(saved){
-    try{
-      SESSION = JSON.parse(saved);
-      // check expiry
-      if(SESSION.expiresAt && new Date(SESSION.expiresAt) < new Date()){
-        localStorage.removeItem('mf_session');
-        SESSION=null;
-        showToast('⏰ Seu plano expirou. Adquira um novo token.','err');
-        goTo('splash');
-        return;
-      }
-      await loadUserProfile();
-    }catch(e){ SESSION=null; localStorage.removeItem('mf_session'); }
+  if(!saved){
+    // No session — stay on splash, let user choose
+    return;
+  }
+
+  try{
+    SESSION = JSON.parse(saved);
+    // Check plan expiry
+    if(SESSION.expiresAt && new Date(SESSION.expiresAt) < new Date()){
+      localStorage.removeItem('mf_session');
+      SESSION=null;
+      showToast('⏰ Seu plano expirou. Adquira um novo token.','err');
+      return; // stay on splash
+    }
+    // Has valid session — load profile and go to app
+    await loadUserProfile();
+  }catch(e){
+    SESSION=null;
+    localStorage.removeItem('mf_session');
+    // Stay on splash — user needs to log in again
   }
 });
 
@@ -750,7 +790,12 @@ async function doActivate(){
 }
 
 function doLogout(){
+  const uid = SESSION?.userId;
   localStorage.removeItem('mf_session');
+  if(uid){
+    localStorage.removeItem(`mf_profile_${uid}`);
+    localStorage.removeItem(`mf_last_eval_${uid}`);
+  }
   SESSION=null; U={}; P={}; completedDays=new Set(); avatarUrl=null;
   document.getElementById('bottomNav').style.display='none';
   goTo('splash');
@@ -761,50 +806,87 @@ function doLogout(){
 //  LOAD USER PROFILE
 // ═══════════════════════════════════
 async function loadUserProfile(){
+  if(!SESSION) { goTo('splash'); return; }
+  if(!SESSION.plan){ goTo('activate'); return; }
+
+  // ── 1. Check local cache first — instant load ──
+  const cacheKey = `mf_profile_${SESSION.userId}`;
+  const cached = localStorage.getItem(cacheKey);
+  if(cached){
+    try{
+      const prof = JSON.parse(cached);
+      applyProfile(prof);
+      document.getElementById('bottomNav').style.display='grid';
+      goTo('dashboard'); switchTab('dashboard');
+      showToast(`✅ Olá, ${(SESSION.name||'').split(' ')[0]}!`,'ok');
+      // Refresh from DB silently in background
+      refreshProfileFromDB(false);
+      return;
+    }catch(e){ localStorage.removeItem(cacheKey); }
+  }
+
+  // ── 2. No cache — fetch from DB (show splash while loading) ──
+  goTo('splash');
+  await refreshProfileFromDB(true);
+}
+
+async function refreshProfileFromDB(navigate=true){
   if(!SESSION) return;
-  if(!SESSION.plan){goTo('activate');return;}
   try{
-    // Load the most recent profile for this user
-    const {data:profs} = await sb.from('profiles')
+    if(!sb) sb = supabase.createClient(SURL, SKEY);
+
+    const {data:profs, error} = await sb
+      .from('profiles')
       .select('*')
-      .eq('user_id',SESSION.userId)
+      .eq('user_id', SESSION.userId)
       .order('created_at',{ascending:false})
       .limit(1);
 
+    if(error){ console.warn('DB error:', error.message); }
+    dbOK = true;
+
     const prof = profs && profs.length > 0 ? profs[0] : null;
-
     if(prof){
-      // Profile exists — load it directly, NO onboarding
-      P={
-        w:prof.weight, h:prof.height, gw:prof.goal_weight, goal:prof.goal,
-        isHome:prof.train_type==='Em Casa',
-        trainDays:prof.train_days, hasSat:prof.train_saturday,
-        weekPlan:SPLITS[prof.train_days]?.[prof.train_saturday?6:5]||SPLITS['4 dias'][5],
-        EX:prof.train_type==='Em Casa'?EXH:EXG,
-        cal:prof.calories, prot:prof.protein, carb:prof.carbs, fat:prof.fat, imc:prof.imc,
-        profileId:prof.id, createdAt:prof.created_at
-      };
-      U={
-        name:prof.name, age:prof.age, weight:prof.weight, height:prof.height,
-        goalWeight:prof.goal_weight, goal:prof.goal, trainType:prof.train_type,
-        trainDays:prof.train_days, trainSaturday:prof.train_saturday, dietType:prof.diet_type
-      };
-      avatarUrl = SESSION.avatarUrl || null;
-
-      await loadWorkouts();
-      fillAll();
+      localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify(prof));
+      applyProfile(prof);
       document.getElementById('bottomNav').style.display='grid';
-      goTo('dashboard'); switchTab('dashboard');
-      showToast(`✅ Bem-vindo de volta, ${(SESSION.name||U.name||'').split(' ')[0]}!`,'ok');
-
-      // Check if 30-day evaluation is due (non-blocking)
+      if(navigate){
+        goTo('dashboard'); switchTab('dashboard');
+        showToast(`✅ Bem-vindo de volta, ${(SESSION.name||'').split(' ')[0]}!`,'ok');
+      }
       checkEvaluationDue(prof.created_at);
       return;
     }
-  }catch(e){ console.error('loadUserProfile error:', e); }
+  }catch(e){
+    console.warn('refreshProfileFromDB:', e.message);
+    dbOK = true;
+  }
 
-  // No profile yet — first time, go to onboarding
-  obStep=0; renderStep(); goTo('onboarding');
+  // No profile found anywhere — go to onboarding only if navigating
+  if(navigate){
+    obStep=0; renderStep(); goTo('onboarding');
+  }
+}
+
+function applyProfile(prof){
+  P={
+    w:prof.weight, h:prof.height, gw:prof.goal_weight, goal:prof.goal,
+    isHome:prof.train_type==='Em Casa',
+    trainDays:prof.train_days, hasSat:prof.train_saturday,
+    weekPlan:SPLITS[prof.train_days]?.[prof.train_saturday?6:5]||SPLITS['4 dias'][5],
+    EX:prof.train_type==='Em Casa'?EXH:EXG,
+    cal:prof.calories, prot:prof.protein, carb:prof.carbs, fat:prof.fat, imc:prof.imc,
+    profileId:prof.id, createdAt:prof.created_at
+  };
+  U={
+    name:prof.name||SESSION.name||'', age:prof.age,
+    weight:prof.weight, height:prof.height, goalWeight:prof.goal_weight,
+    goal:prof.goal, trainType:prof.train_type, trainDays:prof.train_days,
+    trainSaturday:prof.train_saturday, dietType:prof.diet_type
+  };
+  avatarUrl = SESSION.avatarUrl || null;
+  loadWorkouts();
+  fillAll();
 }
 
 function checkEvaluationDue(profileCreatedAt){
@@ -961,11 +1043,9 @@ async function submitMonthlyEval(){
 //  DB OPERATIONS
 // ═══════════════════════════════════
 async function saveProfile(){
-  if(!sb||!dbOK||!SESSION) return;
+  if(!sb||!SESSION) return;
   try{
-    // Check if profile already exists
-    const {data:existing} = await sb.from('profiles')
-      .select('id').eq('user_id',SESSION.userId).limit(1);
+    if(!sb) sb = supabase.createClient(SURL, SKEY);
 
     const profileData = {
       user_id:SESSION.userId, name:U.name, age:parseInt(U.age)||0,
@@ -976,28 +1056,57 @@ async function saveProfile(){
       calories:P.cal, protein:P.prot, carbs:P.carb, fat:P.fat, imc:parseFloat(P.imc)
     };
 
+    // Check if exists
+    const {data:existing} = await sb.from('profiles')
+      .select('id').eq('user_id',SESSION.userId).limit(1);
+
+    let saved;
     if(existing && existing.length > 0){
-      // Update existing profile
-      await sb.from('profiles').update(profileData).eq('user_id',SESSION.userId);
+      const {data} = await sb.from('profiles').update(profileData)
+        .eq('user_id',SESSION.userId).select().single();
+      saved = data;
     } else {
-      // Insert new profile
-      await sb.from('profiles').insert([profileData]);
+      const {data} = await sb.from('profiles').insert([profileData]).select().single();
+      saved = data;
     }
 
-    // Save initial weight history entry
-    await sb.from('weight_history').insert([{
-      user_id:SESSION.userId,
-      weight:parseFloat(U.weight)||0,
-      note:'Plano criado — peso inicial'
-    }]).catch(()=>{});
+    // ── Save to local cache so next load is instant ──
+    if(saved){
+      localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify(saved));
+    } else {
+      // Even without DB response, cache what we have
+      localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify({
+        ...profileData, id: existing?.[0]?.id || 'local', created_at: new Date().toISOString()
+      }));
+    }
 
-    // Mark plan start date in session
+    // Save initial weight history
+    try{
+      await sb.from('weight_history').insert([{
+        user_id:SESSION.userId, weight:parseFloat(U.weight)||0,
+        note:'Plano criado — peso inicial'
+      }]);
+    }catch(e){}
+
     SESSION.planStartDate = new Date().toISOString();
     localStorage.setItem('mf_session', JSON.stringify(SESSION));
     localStorage.setItem(`mf_last_eval_${SESSION.userId}`, new Date().toISOString());
-
-    showToast('💾 Perfil salvo no Supabase!','ok');
-  }catch(e){ console.error('saveProfile error:', e); }
+    dbOK = true;
+    showToast('💾 Perfil salvo!','ok');
+  }catch(e){
+    console.error('saveProfile error:', e);
+    // Save to cache anyway so user doesn't lose data
+    localStorage.setItem(`mf_profile_${SESSION.userId}`, JSON.stringify({
+      user_id:SESSION.userId, name:U.name, age:parseInt(U.age)||0,
+      weight:parseFloat(U.weight)||0, height:parseFloat(U.height)||0,
+      goal_weight:parseFloat(U.goalWeight)||0, goal:U.goal,
+      train_type:U.trainType, train_days:U.trainDays,
+      train_saturday:U.trainSaturday||false, diet_type:U.dietType,
+      calories:P.cal, protein:P.prot, carbs:P.carb, fat:P.fat, imc:parseFloat(P.imc),
+      id:'local_'+Date.now(), created_at:new Date().toISOString()
+    }));
+    showToast('⚠️ Salvo localmente (sem internet)','info');
+  }
 }
 
 async function saveWorkout(idx, photo=null, note=''){
@@ -1533,18 +1642,24 @@ let commFilter='all', commPosts=[];
 async function loadCommunity(){
   const feed=document.getElementById('commFeed');
   if(!feed)return;
-  if(!sb||!dbOK){
+  if(!sb){
     feed.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">⚠️ Sem conexão ao banco</div>`;
     return;
   }
+  feed.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Carregando...</div>`;
   try{
     let q=sb.from('community_posts').select('*').order('created_at',{ascending:false}).limit(50);
     if(commFilter!=='all') q=q.eq('post_type',commFilter);
-    const {data}=await q;
+    const {data,error}=await q;
+    if(error) throw error;
+    dbOK=true; // if we got here, DB is working
     commPosts=data||[];
     renderFeed(commPosts);
   }catch(e){
-    feed.innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem">Erro ao carregar posts</div>`;
+    feed.innerHTML=`<div style="text-align:center;padding:30px">
+      <div style="font-size:2rem;margin-bottom:8px">⚠️</div>
+      <div style="color:var(--muted);font-size:.82rem">Execute o SQL patch v3 no Supabase para criar as tabelas da comunidade</div>
+    </div>`;
   }
 }
 
@@ -1763,6 +1878,145 @@ function sharePost(postId){
   navigator.clipboard.writeText(`Meta Fit — Post #${postId}`).then(()=>showToast('🔗 Link copiado!','info')).catch(()=>{});
 }
 
+// ═══════════════════════════════════
+//  COMMUNITY TABS: FEED / CHAT
+// ═══════════════════════════════════
+let commMainTab = 'feed';
+
+function switchCommMain(tab){
+  commMainTab = tab;
+  const feedPanel = document.getElementById('comm-feed-panel');
+  const chatPanel = document.getElementById('comm-chat-panel');
+  const feedTab = document.getElementById('cmtab-feed');
+  const chatTab = document.getElementById('cmtab-chat');
+  const postBtn = document.getElementById('btnNewPost');
+
+  if(tab==='feed'){
+    feedPanel.style.display='flex'; chatPanel.style.display='none';
+    feedTab.style.color='var(--accent)'; feedTab.style.borderBottomColor='var(--accent)';
+    chatTab.style.color='var(--muted)'; chatTab.style.borderBottomColor='transparent';
+    if(postBtn)postBtn.style.display='';
+    loadCommunity();
+  } else {
+    feedPanel.style.display='none'; chatPanel.style.display='flex';
+    chatTab.style.color='var(--accent)'; chatTab.style.borderBottomColor='var(--accent)';
+    feedTab.style.color='var(--muted)'; feedTab.style.borderBottomColor='transparent';
+    if(postBtn)postBtn.style.display='none';
+    loadChat();
+  }
+}
+
+// ═══════════════════════════════════
+//  CHAT
+// ═══════════════════════════════════
+let chatMessages=[], chatPhotoData=null, chatPolling=null;
+
+async function loadChat(){
+  const el=document.getElementById('chatMessages');
+  if(!el||!sb)return;
+  try{
+    const {data,error}=await sb.from('chat_messages')
+      .select('*').order('created_at',{ascending:true}).limit(100);
+    if(error)throw error;
+    dbOK=true;
+    chatMessages=data||[];
+    renderChatMessages();
+    // Start polling for new messages every 5s
+    if(chatPolling) clearInterval(chatPolling);
+    chatPolling = setInterval(pollChat, 5000);
+  }catch(e){
+    el.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:20px">Execute o SQL patch v3 para criar a tabela de chat</div>`;
+  }
+}
+
+async function pollChat(){
+  if(commMainTab!=='chat'||!sb)return;
+  try{
+    const lastId=chatMessages.length?chatMessages[chatMessages.length-1].id:null;
+    const {data}=await sb.from('chat_messages').select('*').order('created_at',{ascending:true}).limit(100);
+    if(data&&data.length!==chatMessages.length){
+      chatMessages=data;
+      renderChatMessages();
+    }
+  }catch(e){}
+}
+
+function renderChatMessages(){
+  const el=document.getElementById('chatMessages');
+  if(!el)return;
+  const myId=SESSION?.userId;
+  el.innerHTML = chatMessages.length
+    ? chatMessages.map(m=>{
+        const isMe=m.user_id===myId;
+        const dt=new Date(m.created_at);
+        const timeStr=dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        return`
+          <div style="display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};gap:2px">
+            ${!isMe?`<div style="font-size:.64rem;color:var(--accent);font-weight:700;margin-left:8px">${m.user_name||'Atleta'}</div>`:''}
+            <div style="max-width:78%;background:${isMe?'var(--accent)':'var(--card)'};color:${isMe?'#080C10':'var(--text)'};border-radius:${isMe?'16px 4px 16px 16px':'4px 16px 16px 16px'};padding:9px 13px;word-break:break-word">
+              ${m.image_base64?`<img src="${m.image_base64}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;display:block;margin-bottom:${m.content?'6px':'0'}">`:''}
+              ${m.content?`<div style="font-size:.84rem;line-height:1.45">${m.content}</div>`:''}
+              <div style="font-size:.6rem;opacity:.6;margin-top:3px;text-align:right">${timeStr}</div>
+            </div>
+          </div>`;
+      }).join('')
+    : `<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:30px">
+        <div style="font-size:2rem;margin-bottom:8px">💬</div>
+        Seja o primeiro a mandar uma mensagem!
+      </div>`;
+
+  // Scroll to bottom
+  setTimeout(()=>{ el.scrollTop=el.scrollHeight; }, 50);
+}
+
+function autoResizeChat(ta){
+  ta.style.height='auto';
+  ta.style.height=Math.min(ta.scrollHeight,80)+'px';
+}
+
+function onChatPhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{ chatPhotoData=ev.target.result; showToast('📎 Foto pronta para enviar!','info'); };
+  r.readAsDataURL(f);
+}
+
+async function sendChat(){
+  const input=document.getElementById('chatInput');
+  const content=input?.value.trim()||'';
+  if(!content&&!chatPhotoData){showToast('Digite uma mensagem ou selecione uma foto','err');return;}
+  if(!SESSION){showToast('Faça login para enviar mensagens','err');return;}
+  if(!sb)return;
+  try{
+    const {error}=await sb.from('chat_messages').insert([{
+      user_id:SESSION.userId,
+      user_name:SESSION.name||U.name||'Atleta',
+      content:content||null,
+      image_base64:chatPhotoData?chatPhotoData.substring(0,30000):null
+    }]);
+    if(error)throw error;
+    if(input)input.value='';
+    if(input)input.style.height='auto';
+    chatPhotoData=null;
+    await loadChat();
+  }catch(e){showToast('Erro ao enviar: '+e.message,'err');}
+}
+
+// Stop polling when leaving community tab
+function switchTab(tab){
+  if(tab!=='community' && chatPolling){
+    clearInterval(chatPolling); chatPolling=null;
+  }
+  ['dashboard','training','diet','profile','photo-eval','community'].forEach(t=>{
+    const el=document.getElementById(t);if(el)el.classList.toggle('active',t===tab);
+    const nav=document.getElementById('nav-'+t);if(nav)nav.classList.toggle('active',t===tab);
+  });
+  if(tab==='profile')fillProfile();
+  if(tab==='training')renderDayTabs();
+  if(tab==='diet')fillDiet();
+  if(tab==='community'){ commMainTab='feed'; loadCommunity(); }
+}
+
 function getTimeAgo(date){
   const diff=Math.floor((new Date()-date)/1000);
   if(diff<60)return 'agora';
@@ -1865,17 +2119,6 @@ function renderAnalysis(a){
 // ═══════════════════════════════════
 function showToast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3500);}
 
-function switchTab(tab){
-  ['dashboard','training','diet','profile','photo-eval','community'].forEach(t=>{
-    const el=document.getElementById(t);if(el)el.classList.toggle('active',t===tab);
-    const nav=document.getElementById('nav-'+t);if(nav)nav.classList.toggle('active',t===tab);
-  });
-  if(tab==='profile')fillProfile();
-  if(tab==='training'){renderDayTabs();}
-  if(tab==='diet')fillDiet();
-  if(tab==='community')loadCommunity();
-}
-
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1937,7 +2180,8 @@ async function doResetPass(){
   btn.disabled=false; btn.textContent='REDEFINIR SENHA';
 }
 
-renderStep();
+// Only render onboarding step when actually needed — NOT on page load
+// renderStep() is called explicitly from startGenerate() and loadUserProfile()
 </script>
 </body>
 </html>
