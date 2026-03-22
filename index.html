@@ -23,6 +23,14 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 #splash{align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0D2219 0%,#080C10 70%);position:relative;}
 .gr{position:absolute;border-radius:50%;border:1px solid rgba(0,229,160,.1);animation:pulse 3s infinite;}
 .gr:nth-child(1){width:300px;height:300px;}.gr:nth-child(2){width:480px;height:480px;animation-delay:.5s;border-color:rgba(61,155,255,.07);}.gr:nth-child(3){width:660px;height:660px;animation-delay:1s;border-color:rgba(0,229,160,.04);}
+
+/* ROLE BADGES */
+.role-badge{display:inline-flex;align-items:center;gap:3px;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:20px;letter-spacing:.5px;vertical-align:middle;margin-left:4px;flex-shrink:0;}
+.role-owner{background:linear-gradient(135deg,#FFD700,#ffaa00);color:#080C10;}
+.role-master{background:linear-gradient(135deg,#FF5C38,#ff8c38);color:white;}
+.role-mod{background:rgba(61,155,255,.2);color:var(--accent3);border:1px solid rgba(61,155,255,.3);}
+.role-vip{background:rgba(0,229,160,.15);color:var(--accent);border:1px solid rgba(0,229,160,.3);}
+.role-member{display:none;}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04);opacity:.5}}
 .splash-in{text-align:center;z-index:1;}
 .s-tag{font-family:'Bebas Neue';letter-spacing:6px;font-size:.82rem;color:var(--accent);display:block;margin-bottom:4px;}
@@ -137,6 +145,35 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,.3);}
 .btn-bk{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.82rem;padding:9px 16px;border-radius:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:4px;}
 .btn-bk:hover{border-color:var(--muted);color:var(--text);}
+
+/* ══ TUTORIAL ══════════════════════════════════ */
+#tutorial{background:var(--bg);align-items:center;justify-content:center;}
+.tut-wrap{width:100%;max-width:380px;padding:0 20px;position:relative;}
+.tut-slides{overflow:hidden;width:100%;}
+.tut-track{display:flex;transition:transform .4s cubic-bezier(.4,0,.2,1);}
+.tut-slide{min-width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px;}
+.tut-icon-wrap{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3.2rem;margin-bottom:28px;position:relative;}
+.tut-icon-wrap::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--accent),var(--accent3),var(--accent));opacity:.25;animation:spin 4s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tut-icon-wrap::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--surface);}
+.tut-icon{position:relative;z-index:1;}
+.tut-step{font-size:.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.tut-title{font-family:'Bebas Neue';font-size:2.6rem;letter-spacing:3px;line-height:1;margin-bottom:14px;color:var(--text);}
+.tut-title span{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tut-desc{font-size:.9rem;color:var(--muted);line-height:1.7;max-width:320px;}
+.tut-desc strong{color:var(--text);font-weight:700;}
+.tut-dots{display:flex;justify-content:center;gap:7px;margin:32px 0 28px;}
+.tut-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .3s;}
+.tut-dot.active{background:var(--accent);width:22px;border-radius:4px;}
+.tut-dot.done{background:var(--accent);opacity:.4;}
+.tut-btn{width:100%;background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:900;font-size:.95rem;letter-spacing:1.5px;text-transform:uppercase;border:none;padding:15px;border-radius:13px;cursor:pointer;transition:all .2s;box-shadow:0 0 25px rgba(0,229,160,.25);}
+.tut-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,229,160,.35);}
+.tut-skip{background:none;border:none;color:var(--muted);font-family:'Outfit';font-size:.78rem;font-weight:600;cursor:pointer;margin-top:14px;padding:6px;display:block;width:100%;text-align:center;transition:color .2s;}
+.tut-skip:hover{color:var(--text);}
+.tut-highlight{background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:10px;padding:11px 14px;margin-top:16px;width:100%;display:flex;align-items:center;gap:10px;text-align:left;}
+.tut-hl-icon{font-size:1.1rem;flex-shrink:0;}
+.tut-hl-text{font-size:.76rem;color:var(--muted);line-height:1.5;}
+.tut-hl-text strong{color:var(--accent);}
 
 /* PLAN LOCKED */
 .locked-overlay{background:rgba(8,12,16,.95);border-radius:15px;padding:24px;text-align:center;margin:10px 20px;}
@@ -435,6 +472,88 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 </div>
 
 <!-- ONBOARDING -->
+<!-- TUTORIAL PRIMEIRO ACESSO -->
+<div id="tutorial" class="screen">
+  <div class="tut-wrap">
+    <div class="tut-slides">
+      <div class="tut-track" id="tutTrack">
+
+        <!-- SLIDE 1 — Boas-vindas -->
+        <div class="tut-slide">
+          <div class="tut-icon-wrap"><span class="tut-icon">🎉</span></div>
+          <div class="tut-step">Passo 1 de 5</div>
+          <div class="tut-title">BEM-VINDO AO<br><span>META FIT!</span></div>
+          <p class="tut-desc">Seu plano de treino e dieta <strong>feito para o seu corpo</strong> está a poucos passos. Vamos te mostrar como funciona tudo.</p>
+          <div class="tut-highlight">
+            <span class="tut-hl-icon">⚡</span>
+            <div class="tut-hl-text"><strong>Acesso ativado com sucesso!</strong><br>Agora você terá um plano 100% personalizado.</div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 — Treinos -->
+        <div class="tut-slide">
+          <div class="tut-icon-wrap"><span class="tut-icon">🏋️</span></div>
+          <div class="tut-step">Passo 2 de 5</div>
+          <div class="tut-title">SEUS<br><span>TREINOS</span></div>
+          <p class="tut-desc">Na aba <strong>Treinos</strong> você encontra o exercício de cada dia da semana, com séries, repetições e dicas de execução.</p>
+          <div class="tut-highlight">
+            <span class="tut-hl-icon">✅</span>
+            <div class="tut-hl-text">Clique em <strong>"Concluir Treino"</strong> ao terminar — seu progresso semanal é registrado automaticamente.</div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3 — Dieta -->
+        <div class="tut-slide">
+          <div class="tut-icon-wrap"><span class="tut-icon">🥗</span></div>
+          <div class="tut-step">Passo 3 de 5</div>
+          <div class="tut-title">SUA<br><span>DIETA</span></div>
+          <p class="tut-desc">Seu plano alimentar fica no <strong>Início</strong>, com calorias, proteínas, carboidratos e gorduras calculados para o seu objetivo.</p>
+          <div class="tut-highlight">
+            <span class="tut-hl-icon">🎯</span>
+            <div class="tut-hl-text">A dieta é calculada com base no seu <strong>peso, altura e meta</strong> — quanto mais preciso você preencher, melhor o resultado.</div>
+          </div>
+        </div>
+
+        <!-- SLIDE 4 — Avaliação -->
+        <div class="tut-slide">
+          <div class="tut-icon-wrap"><span class="tut-icon">📊</span></div>
+          <div class="tut-step">Passo 4 de 5</div>
+          <div class="tut-title">EVOLUÇÃO<br><span>MENSAL</span></div>
+          <p class="tut-desc">A cada 30 dias o app pede uma <strong>reavaliação física</strong>. Seus treinos e dieta são atualizados automaticamente conforme você evolui.</p>
+          <div class="tut-highlight">
+            <span class="tut-hl-icon">📸</span>
+            <div class="tut-hl-text">Você pode fazer uma <strong>autoavaliação com foto</strong> para análise de composição corporal e score de progresso.</div>
+          </div>
+        </div>
+
+        <!-- SLIDE 5 — Vamos lá -->
+        <div class="tut-slide">
+          <div class="tut-icon-wrap"><span class="tut-icon">🚀</span></div>
+          <div class="tut-step">Passo 5 de 5</div>
+          <div class="tut-title">PRONTO<br><span>PRA COMEÇAR!</span></div>
+          <p class="tut-desc">Agora preencha seus dados físicos para <strong>gerar seu plano personalizado</strong>. Leva menos de 2 minutos.</p>
+          <div class="tut-highlight">
+            <span class="tut-hl-icon">💪</span>
+            <div class="tut-hl-text">Seja honesto nos dados — isso garante o plano <strong>mais eficiente possível</strong> para o seu corpo.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tut-dots" id="tutDots">
+      <div class="tut-dot active"></div>
+      <div class="tut-dot"></div>
+      <div class="tut-dot"></div>
+      <div class="tut-dot"></div>
+      <div class="tut-dot"></div>
+    </div>
+
+    <button class="tut-btn" id="tutBtn" onclick="tutNext()">PRÓXIMO →</button>
+    <button class="tut-skip" onclick="tutSkip()">Pular tutorial</button>
+  </div>
+</div>
+
 <div id="onboarding" class="screen">
   <div class="ob-hdr"><div class="sdots" id="sdots"></div><span style="font-size:.68rem;color:var(--muted)" id="stepCount"></span></div>
   <div class="ob-body anim" id="obBody"></div>
@@ -534,6 +653,10 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
       style="flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:1px">
       💬 Chat
     </div>
+    <div class="comm-main-tab" id="cmtab-sugestoes" onclick="switchCommMain('sugestoes')"
+      style="flex:1;text-align:center;padding:10px;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:1px">
+      💡 Ideias
+    </div>
   </div>
 
   <!-- FEED -->
@@ -550,7 +673,39 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     </div>
   </div>
 
-  <!-- CHAT -->
+  <!-- SUGESTÕES -->
+  <div id="comm-sugestoes-panel" style="display:none;flex-direction:column;flex:1;overflow-y:auto;padding:16px 20px;padding-bottom:90px;gap:12px">
+    <!-- FORM PARA USUÁRIO ENVIAR -->
+    <div id="sugestaoFormWrap">
+      <div style="background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.2);border-radius:14px;padding:16px;margin-bottom:14px">
+        <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:8px">💡 Envie sua sugestão</div>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:12px;line-height:1.5">Tem uma ideia para melhorar o Meta Fit? Manda aqui! Só o time vê suas sugestões.</p>
+        <textarea id="sugestaoText" placeholder="Ex: Queria poder adicionar fotos de progresso no perfil..." 
+          style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:.88rem;padding:11px 13px;border-radius:10px;outline:none;resize:none;min-height:80px;line-height:1.5"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <select id="sugestaoCategoria" style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Outfit';font-size:.8rem;padding:8px 12px;border-radius:9px;outline:none;flex:1">
+            <option value="funcionalidade">⚡ Nova funcionalidade</option>
+            <option value="melhoria">✨ Melhoria no app</option>
+            <option value="bug">🐛 Reportar problema</option>
+            <option value="conteudo">📚 Conteúdo / treino</option>
+            <option value="outro">💬 Outro</option>
+          </select>
+          <button onclick="enviarSugestao()" style="background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:.8rem;border:none;padding:9px 20px;border-radius:9px;cursor:pointer;white-space:nowrap">ENVIAR</button>
+        </div>
+      </div>
+      <div style="font-size:.7rem;color:var(--muted);text-align:center">Suas sugestões anteriores ficam aqui abaixo 👇</div>
+    </div>
+    <!-- SUGESTÕES DO PRÓPRIO USUÁRIO -->
+    <div id="minhasSugestoes" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>
+    <!-- PAINEL ADMIN — só aparece para admins -->
+    <div id="adminSugestoesPanel" style="display:none;margin-top:20px">
+      <div style="font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;color:var(--accent2);margin-bottom:12px">🛡️ PAINEL ADMIN — TODAS AS SUGESTÕES</div>
+      <div id="todasSugestoes" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+  </div>
+
+
   <div id="comm-chat-panel" style="display:none;flex-direction:column;flex:1;min-height:0">
     <div id="chatMessages" style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px;padding-bottom:8px;min-height:200px;max-height:calc(100vh - 260px)">
       <div style="text-align:center;color:var(--muted);font-size:.78rem;padding:16px">Carregando chat...</div>
@@ -587,6 +742,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     </div>
     <div class="prof-name" id="profName">—</div>
     <div class="prof-badge" id="profBadge">—</div>
+    <div id="profRoleBadge" style="margin-top:6px"></div>
   </div>
   
   <div class="info-grid">
@@ -607,6 +763,23 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     <div class="eval-t">⏱️ AVALIAÇÃO MENSAL</div>
     <div class="eval-sub">Após 30 dias, atualize seus dados para ajustar treinos e dieta à sua evolução.</div>
     <button class="btn-eval" onclick="startEval()">REFAZER AVALIAÇÃO</button>
+  </div>
+  <!-- REDES SOCIAIS -->
+  <div style="padding:0 20px 14px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px">
+      <div style="font-size:.66rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:700;margin-bottom:10px">📱 SIGA A META FIT</div>
+      <a href="https://www.instagram.com/metafitbr.ofc/" target="_blank"
+        style="display:flex;align-items:center;gap:12px;text-decoration:none;background:linear-gradient(135deg,rgba(214,41,118,.12),rgba(255,100,55,.08));border:1px solid rgba(214,41,118,.25);border-radius:11px;padding:12px 14px;transition:all .2s">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:.86rem;color:#F0F4F8">@metafitbr.ofc</div>
+          <div style="font-size:.72rem;color:var(--muted)">Dicas, treinos e motivação</div>
+        </div>
+        <div style="margin-left:auto;color:var(--muted);font-size:.8rem">→</div>
+      </a>
+    </div>
   </div>
   <button class="btn-logout" onclick="doLogout()">🚪 Sair da conta</button>
 </div>
@@ -857,6 +1030,8 @@ async function doActivate(){
     const planName=tok.plan_type==='avancado'?'Avançado 👑':'Básico ⭐';
     const validity=tok.is_lifetime?'Vitalício ♾️':`${tok.duration_days} dias`;
     showToast(`🎉 Plano ${planName} ativado! ${validity}`,'ok');
+    // Show tutorial on first activation
+    try{ localStorage.removeItem(TUT_KEY()); }catch(_){}
     await loadUserProfile();
   }catch(e){showToast('Erro ao ativar: '+e.message,'err');}
   btn.disabled=false; btn.textContent='ATIVAR TOKEN';
@@ -932,7 +1107,7 @@ async function refreshProfileFromDB(navigate=true){
     checkEvaluationDue(prof.created_at);
     return;
   }
-  if(navigate){ obStep=0; renderStep(); goTo('onboarding'); }
+  if(navigate){ obStep=0; renderStep(); goTo(shouldShowTutorial()?'tutorial':'onboarding'); }
 }
 
 function applyProfile(prof){
@@ -949,10 +1124,12 @@ function applyProfile(prof){
     name:prof.name||SESSION.name||'', age:prof.age,
     weight:prof.weight, height:prof.height, goalWeight:prof.goal_weight,
     goal:prof.goal, trainType:prof.train_type, trainDays:prof.train_days,
-    trainSaturday:prof.train_saturday, dietType:prof.diet_type
+    trainSaturday:prof.train_saturday, dietType:prof.diet_type,
+    gender:prof.gender||'Masculino'
   };
   avatarUrl = SESSION.avatarUrl || null;
   loadWorkouts();
+  loadMyRole();
   fillAll();
 }
 
@@ -1065,10 +1242,18 @@ async function submitMonthlyEval(){
 
   // Recalculate macros
   const w=newWeight, h=parseFloat(U.height)||175;
-  let cal=2000, prot=Math.round(w*2.2), carb=200, fat=60;
-  if(newGoal==='Emagrecer'){cal=Math.round(w*26);carb=150;fat=55;}
-  else if(newGoal==='Ganhar Massa'){cal=Math.round(w*35);carb=280;prot=Math.round(w*2.6);fat=70;}
-  else{cal=Math.round(w*30);carb=220;fat=65;}
+  const age=parseInt(U.age)||25;
+  const gender=U.gender||'Masculino';
+  let tmb2;
+  if(gender==='Feminino') tmb2=447.6+(9.2*w)+(3.1*h)-(4.3*age);
+  else tmb2=88.36+(13.4*w)+(4.8*h)-(5.7*age);
+  const dias2=parseInt(U.trainDays)||4;
+  const fat2=dias2<=3?1.375:dias2<=4?1.55:1.725;
+  const tdee2=Math.round(tmb2*fat2);
+  let cal,prot,carb,fat;
+  if(newGoal==='Emagrecer'){cal=Math.max(1200,Math.round(tdee2-400));prot=Math.round(w*(gender==='Feminino'?2.0:2.2));carb=Math.round((cal*.35)/4);fat=Math.round((cal*.28)/9);}
+  else if(newGoal==='Ganhar Massa'){cal=Math.round(tdee2+300);prot=Math.round(w*(gender==='Feminino'?2.2:2.6));carb=Math.round((cal*.45)/4);fat=Math.round((cal*.25)/9);}
+  else{cal=tdee2;prot=Math.round(w*(gender==='Feminino'?1.8:2.0));carb=Math.round((cal*.40)/4);fat=Math.round((cal*.28)/9);}
 
   P.w=newWeight; P.goal=newGoal; P.cal=cal; P.prot=prot; P.carb=carb; P.fat=fat;
   P.imc=(w/((h/100)**2)).toFixed(1);
@@ -1120,6 +1305,7 @@ async function saveProfile(){
       goal_weight:parseFloat(U.goalWeight)||0, goal:U.goal,
       train_type:U.trainType, train_days:U.trainDays,
       train_saturday:U.trainSaturday||false, diet_type:U.dietType,
+      gender:U.gender||'Masculino',
       calories:P.cal, protein:P.prot, carbs:P.carb, fat:P.fat, imc:parseFloat(P.imc)
     };
 
@@ -1168,6 +1354,7 @@ async function saveProfile(){
       goal_weight:parseFloat(U.goalWeight)||0, goal:U.goal,
       train_type:U.trainType, train_days:U.trainDays,
       train_saturday:U.trainSaturday||false, diet_type:U.dietType,
+      gender:U.gender||'Masculino',
       calories:P.cal, protein:P.prot, carbs:P.carb, fat:P.fat, imc:parseFloat(P.imc),
       id:'local_'+Date.now(), created_at:new Date().toISOString()
     }));
@@ -1337,6 +1524,7 @@ function copyToken(token){
 const STEPS=[
   {title:'Vamos começar\n<span>SEU PLANO</span>',sub:'Confirme seus dados para montarmos o melhor plano.',fields:[{type:'text',key:'name',label:'Seu nome completo',ph:'Ex: Lucas Silva'},{type:'number',key:'age',label:'Sua idade',ph:'Ex: 28'}]},
   {title:'Foto de\n<span>PERFIL</span>',sub:'Adicione uma foto de perfil. (Opcional)',fields:[{type:'avatar'}]},
+  {title:'Seu\n<span>GÊNERO</span>',sub:'Usamos para calcular suas calorias e macros com precisão.',fields:[{type:'opts',key:'gender',cols:2,opts:[{icon:'👨',label:'Masculino',desc:'Homem'},{icon:'👩',label:'Feminino',desc:'Mulher'}]}]},
   {title:'Seus\n<span>DADOS</span>',sub:'Medidas para calcular IMC e calorias ideais.',fields:[{type:'row',fields:[{type:'number',key:'weight',label:'Peso atual (kg)',ph:'Ex: 85'},{type:'number',key:'height',label:'Altura (cm)',ph:'Ex: 175'}]},{type:'number',key:'goalWeight',label:'Peso desejado (kg)',ph:'Ex: 75'}]},
   {title:'Seu\n<span>OBJETIVO</span>',sub:'O que você quer alcançar?',fields:[{type:'opts',key:'goal',cols:3,opts:[{icon:'🔥',label:'Emagrecer',desc:'Queimar gordura'},{icon:'💪',label:'Ganhar Massa',desc:'Hipertrofia'},{icon:'⚖️',label:'Manter',desc:'Definição'}]}]},
   {title:'Tipo de\n<span>TREINO</span>',sub:'Onde você vai se exercitar?',fields:[{type:'opts',key:'trainType',cols:2,opts:[{icon:'🏠',label:'Em Casa',desc:'Sem equipamentos'},{icon:'🏋️',label:'Academia',desc:'Equipamentos completos'}]}]},
@@ -1394,14 +1582,48 @@ const TIPS={peito:['Desça em 3s para máximo crescimento muscular.','Mantenha o
 
 function buildPlan(){
   const w=parseFloat(U.weight)||80,h=parseFloat(U.height)||175,gw=parseFloat(U.goalWeight)||70;
+  const age=parseInt(U.age)||25;
+  const gender=U.gender||'Masculino';
   const goal=U.goal||'Emagrecer',td=U.trainDays||'4 dias',hasSat=U.trainSaturday===true;
   const wp=SPLITS[td]?.[hasSat?6:5]||SPLITS['4 dias'][5];
   const EX=U.trainType==='Em Casa'?EXH:EXG;
-  let cal=2000,prot=Math.round(w*2.2),carb=200,fat=60;
-  if(goal==='Emagrecer'){cal=Math.round(w*26);carb=150;fat=55;}
-  else if(goal==='Ganhar Massa'){cal=Math.round(w*35);carb=280;prot=Math.round(w*2.6);fat=70;}
-  else{cal=Math.round(w*30);carb=220;fat=65;}
-  P={w,h,gw,goal,isHome:U.trainType==='Em Casa',trainDays:td,hasSat,weekPlan:wp,EX,cal,prot,carb,fat,imc:(w/((h/100)**2)).toFixed(1)};
+
+  // Harris-Benedict TMB com gênero
+  // Masculino: 88.36 + (13.4 × peso) + (4.8 × altura) - (5.7 × idade)
+  // Feminino:  447.6 + (9.2 × peso)  + (3.1 × altura) - (4.3 × idade)
+  let tmb;
+  if(gender==='Feminino'){
+    tmb = 447.6 + (9.2*w) + (3.1*h) - (4.3*age);
+  } else {
+    tmb = 88.36 + (13.4*w) + (4.8*h) - (5.7*age);
+  }
+
+  // Fator de atividade baseado nos dias de treino
+  const dias=parseInt(td)||4;
+  const fatorAtividade = dias<=3 ? 1.375 : dias<=4 ? 1.55 : 1.725;
+  const tdee = Math.round(tmb * fatorAtividade);
+
+  let cal,prot,carb,fat;
+
+  if(goal==='Emagrecer'){
+    cal  = Math.max(1200, Math.round(tdee - 400)); // déficit de 400kcal
+    prot = Math.round(w * (gender==='Feminino' ? 2.0 : 2.2));
+    carb = Math.round((cal * 0.35) / 4);
+    fat  = Math.round((cal * 0.28) / 9);
+  } else if(goal==='Ganhar Massa'){
+    cal  = Math.round(tdee + 300); // superávit de 300kcal
+    prot = Math.round(w * (gender==='Feminino' ? 2.2 : 2.6));
+    carb = Math.round((cal * 0.45) / 4);
+    fat  = Math.round((cal * 0.25) / 9);
+  } else { // Manter
+    cal  = tdee;
+    prot = Math.round(w * (gender==='Feminino' ? 1.8 : 2.0));
+    carb = Math.round((cal * 0.40) / 4);
+    fat  = Math.round((cal * 0.28) / 9);
+  }
+
+  P={w,h,gw,goal,isHome:U.trainType==='Em Casa',trainDays:td,hasSat,weekPlan:wp,EX,
+     cal,prot,carb,fat,imc:(w/((h/100)**2)).toFixed(1),gender,tmb:Math.round(tmb),tdee};
 }
 
 // ═══════════════════════════════════
@@ -1724,6 +1946,9 @@ async function loadCommunity(){
     if(error) throw error;
     dbOK=true; // if we got here, DB is working
     commPosts=data||[];
+    // Pre-load roles for all post authors
+    const postUserIds=[...new Set((data||[]).map(p=>p.user_id).filter(Boolean))];
+    await loadUserRoles(postUserIds);
     renderFeed(commPosts);
   }catch(e){
     feed.innerHTML=`<div style="text-align:center;padding:30px">
@@ -1754,14 +1979,17 @@ function renderFeed(posts){
       <div class="comm-post" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden">
         <!-- Header -->
         <div style="display:flex;align-items:center;gap:10px;padding:14px 14px 10px">
-          <div style="width:36px;height:36px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1rem;color:#080C10;flex-shrink:0">
+          <div style="width:36px;height:36px;border-radius:50%;background:${(()=>{const r=userRoleCache[p.user_id]||'member';return r==='master'?'linear-gradient(135deg,#FF5C38,#ff8c38)':r==='moderator'?'linear-gradient(135deg,#3D9BFF,#0066cc)':r==='vip'?'linear-gradient(135deg,#00E5A0,#00a870)':'var(--grad)'})()};display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1rem;color:#080C10;flex-shrink:0">
             ${(p.user_name||'A').charAt(0).toUpperCase()}
           </div>
-          <div style="flex:1">
-            <div style="font-weight:700;font-size:.86rem">${p.user_name||'Atleta'}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
+              <span style="font-weight:700;font-size:.86rem">${p.user_name||'Atleta'}</span>
+              ${getRoleBadge(p.user_id)}
+            </div>
             <div style="font-size:.68rem;color:var(--muted)">${timeAgo}</div>
           </div>
-          <span style="background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.2);color:var(--accent);font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:20px">${typeIcon} ${typeLbl}</span>
+          <span style="background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.2);color:var(--accent);font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0">${typeIcon} ${typeLbl}</span>
           ${isOwn?`<button onclick="deletePost('${p.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px">🗑️</button>`:''}
         </div>
         <!-- Image -->
@@ -1957,22 +2185,31 @@ function switchCommMain(tab){
   commMainTab = tab;
   const feedPanel = document.getElementById('comm-feed-panel');
   const chatPanel = document.getElementById('comm-chat-panel');
+  const sugestoesPanel = document.getElementById('comm-sugestoes-panel');
   const feedTab = document.getElementById('cmtab-feed');
   const chatTab = document.getElementById('cmtab-chat');
+  const sugestoesTab = document.getElementById('cmtab-sugestoes');
   const postBtn = document.getElementById('btnNewPost');
 
+  // Reset all
+  [feedPanel,chatPanel,sugestoesPanel].forEach(p=>{ if(p) p.style.display='none'; });
+  [feedTab,chatTab,sugestoesTab].forEach(t=>{ if(t){ t.style.color='var(--muted)'; t.style.borderBottomColor='transparent'; }});
+
   if(tab==='feed'){
-    feedPanel.style.display='flex'; chatPanel.style.display='none';
+    feedPanel.style.display='flex';
     feedTab.style.color='var(--accent)'; feedTab.style.borderBottomColor='var(--accent)';
-    chatTab.style.color='var(--muted)'; chatTab.style.borderBottomColor='transparent';
     if(postBtn)postBtn.style.display='';
     loadCommunity();
-  } else {
-    feedPanel.style.display='none'; chatPanel.style.display='flex';
+  } else if(tab==='chat'){
+    chatPanel.style.display='flex';
     chatTab.style.color='var(--accent)'; chatTab.style.borderBottomColor='var(--accent)';
-    feedTab.style.color='var(--muted)'; feedTab.style.borderBottomColor='transparent';
     if(postBtn)postBtn.style.display='none';
     loadChat();
+  } else if(tab==='sugestoes'){
+    sugestoesPanel.style.display='flex';
+    sugestoesTab.style.color='var(--accent)'; sugestoesTab.style.borderBottomColor='var(--accent)';
+    if(postBtn)postBtn.style.display='none';
+    loadSugestoes();
   }
 }
 
@@ -2011,32 +2248,117 @@ async function pollChat(){
   }catch(e){}
 }
 
+
+// ══ ROLE SYSTEM ══
+// Cache of userId → role (populated from admins + app_users tables)
+const userRoleCache = {};
+
+// Roles: 'owner' = you (SESSION owner), 'master' = master admin, 
+//        'moderator' = mod admin, 'vip' = avancado plan, 'member' = basico
+async function loadUserRoles(userIds){
+  if(!sb||!userIds||!userIds.length) return;
+  const toFetch = userIds.filter(id=>!userRoleCache[id]);
+  if(!toFetch.length) return;
+  try{
+    // Check admins table
+    const {data:admins} = await sb.from('admins').select('email,role');
+    const {data:users} = await sb.from('app_users').select('id,email').in('id',toFetch);
+    const {data:tokens} = await sb.from('tokens').select('used_by,plan_type,is_lifetime,expires_at')
+      .in('used_by',toFetch).eq('is_used',true);
+
+    (users||[]).forEach(u=>{
+      const adm = (admins||[]).find(a=>a.email===u.email);
+      const tok = (tokens||[]).find(t=>t.used_by===u.id && 
+        (t.is_lifetime || !t.expires_at || new Date(t.expires_at)>new Date()));
+      if(adm?.role==='master') userRoleCache[u.id]='master';
+      else if(adm?.role==='moderator') userRoleCache[u.id]='moderator';
+      else if(tok?.plan_type==='avancado') userRoleCache[u.id]='vip';
+      else userRoleCache[u.id]='member';
+    });
+  }catch(e){}
+}
+
+function getRoleBadge(userId){
+  // Mark own SESSION user as owner in display
+  if(userId === SESSION?.userId){
+    const myRole = userRoleCache[userId];
+    if(myRole==='master') return '<span class="role-badge role-master">👑 ADMIN</span>';
+    if(myRole==='moderator') return '<span class="role-badge role-mod">🛡️ MOD</span>';
+    if(myRole==='vip') return '<span class="role-badge role-vip">⭐ VIP</span>';
+    return ''; // normal member — no badge for self
+  }
+  const role = userRoleCache[userId];
+  if(role==='master')    return '<span class="role-badge role-master">👑 ADMIN</span>';
+  if(role==='moderator') return '<span class="role-badge role-mod">🛡️ MOD</span>';
+  if(role==='vip')       return '<span class="role-badge role-vip">⭐ VIP</span>';
+  return ''; // regular member — no badge
+}
+
+// Also store SESSION user role at login
+async function loadMyRole(){
+  if(!SESSION?.userId||!sb) return;
+  try{
+    const {data:me} = await sb.from('app_users').select('email').eq('id',SESSION.userId).single();
+    if(!me) return;
+    const {data:adm} = await sb.from('admins').select('role').eq('email',me.email).single();
+    if(adm) userRoleCache[SESSION.userId] = adm.role;
+    else{
+      const {data:tok} = await sb.from('tokens').select('plan_type,is_lifetime,expires_at')
+        .eq('used_by',SESSION.userId).eq('is_used',true)
+        .order('used_at',{ascending:false}).limit(1).single();
+      if(tok && (tok.is_lifetime||!tok.expires_at||new Date(tok.expires_at)>new Date()))
+        userRoleCache[SESSION.userId] = tok.plan_type==='avancado'?'vip':'member';
+      else userRoleCache[SESSION.userId]='member';
+    }
+  }catch(e){}
+}
+
 function renderChatMessages(){
   const el=document.getElementById('chatMessages');
   if(!el)return;
   const myId=SESSION?.userId;
-  el.innerHTML = chatMessages.length
-    ? chatMessages.map(m=>{
-        const isMe=m.user_id===myId;
-        const dt=new Date(m.created_at);
-        const timeStr=dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-        return`
-          <div style="display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};gap:2px">
-            ${!isMe?`<div style="font-size:.64rem;color:var(--accent);font-weight:700;margin-left:8px">${m.user_name||'Atleta'}</div>`:''}
-            <div style="max-width:78%;background:${isMe?'var(--accent)':'var(--card)'};color:${isMe?'#080C10':'var(--text)'};border-radius:${isMe?'16px 4px 16px 16px':'4px 16px 16px 16px'};padding:9px 13px;word-break:break-word">
-              ${m.image_base64?`<img src="${m.image_base64}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;display:block;margin-bottom:${m.content?'6px':'0'}">`:''}
-              ${m.content?`<div style="font-size:.84rem;line-height:1.45">${m.content}</div>`:''}
-              <div style="font-size:.6rem;opacity:.6;margin-top:3px;text-align:right">${timeStr}</div>
-            </div>
-          </div>`;
-      }).join('')
-    : `<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:30px">
-        <div style="font-size:2rem;margin-bottom:8px">💬</div>
-        Seja o primeiro a mandar uma mensagem!
-      </div>`;
 
-  // Scroll to bottom
-  setTimeout(()=>{ el.scrollTop=el.scrollHeight; }, 50);
+  // Pre-load roles for all unique users
+  const uids=[...new Set(chatMessages.map(m=>m.user_id).filter(Boolean))];
+  loadUserRoles(uids).then(()=>{
+    el.innerHTML = chatMessages.length
+      ? chatMessages.map(m=>{
+          const isMe=m.user_id===myId;
+          const dt=new Date(m.created_at);
+          const timeStr=dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+          const badge=getRoleBadge(m.user_id);
+          // Avatar color per role
+          const role=userRoleCache[m.user_id]||'member';
+          const avBg=role==='master'?'linear-gradient(135deg,#FF5C38,#ff8c38)':
+                     role==='moderator'?'linear-gradient(135deg,#3D9BFF,#0066cc)':
+                     role==='vip'?'linear-gradient(135deg,#00E5A0,#00a870)':
+                     'var(--surface)';
+          return`
+            <div style="display:flex;flex-direction:column;align-items:${isMe?'flex-end':'flex-start'};gap:3px;margin-bottom:2px">
+              ${!isMe?`
+                <div style="display:flex;align-items:center;gap:5px;margin-left:8px">
+                  <div style="width:20px;height:20px;border-radius:50%;background:${avBg};display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#080C10;flex-shrink:0">
+                    ${(m.user_name||'A').charAt(0).toUpperCase()}
+                  </div>
+                  <span style="font-size:.66rem;font-weight:700;color:${role==='master'?'var(--accent2)':role==='moderator'?'var(--accent3)':role==='vip'?'var(--accent)':'var(--muted)'}">${m.user_name||'Atleta'}</span>
+                  ${badge}
+                </div>`:
+              `<div style="display:flex;align-items:center;gap:4px;margin-right:4px;justify-content:flex-end">
+                  <span style="font-size:.62rem;color:var(--muted)">Você</span>${getRoleBadge(myId)}
+                </div>`}
+              <div style="max-width:78%;background:${isMe?'var(--accent)':'var(--card)'};color:${isMe?'#080C10':'var(--text)'};border-radius:${isMe?'16px 4px 16px 16px':'4px 16px 16px 16px'};padding:9px 13px;word-break:break-word;${role==='master'&&!isMe?'border:1px solid rgba(255,92,56,.3)':''}${role==='moderator'&&!isMe?'border:1px solid rgba(61,155,255,.25)':''}">
+                ${m.image_base64?`<img src="${m.image_base64}" style="width:100%;max-height:180px;object-fit:cover;border-radius:8px;display:block;margin-bottom:${m.content?'6px':'0'}">`:''}
+                ${m.content?`<div style="font-size:.84rem;line-height:1.45">${m.content}</div>`:''}
+                <div style="font-size:.6rem;opacity:.6;margin-top:3px;text-align:right">${timeStr}</div>
+              </div>
+            </div>`;
+        }).join('')
+      : `<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:30px">
+          <div style="font-size:2rem;margin-bottom:8px">💬</div>
+          Seja o primeiro a mandar uma mensagem!
+        </div>`;
+    setTimeout(()=>{ el.scrollTop=el.scrollHeight; }, 50);
+  });
 }
 
 function autoResizeChat(ta){
@@ -2136,8 +2458,42 @@ function fillProfile(){
   else document.getElementById('profAvWrap').innerHTML=`<div class="prof-av-ph">${name.charAt(0).toUpperCase()}</div>`;
   document.getElementById('profName').textContent=name.toUpperCase();
   const plan=SESSION?.plan||'basico';
-  document.getElementById('profBadge').textContent=`${plan==='avancado'?'👑 Avançado':'⭐ Básico'} · ${P.goal} · ${U.trainType||'Academia'}`;
-  document.getElementById('pi1').textContent=P.w+'kg';document.getElementById('pi2').textContent=P.gw+'kg';document.getElementById('pi3').textContent=P.imc;document.getElementById('pi4').textContent=P.cal;
+  document.getElementById('profBadge').textContent=`${plan==='avancado'?'👑 Avançado':'⭐ Básico'} · ${U.gender||'Masculino'} · ${P.goal} · ${U.trainType||'Academia'}`;
+
+  // Show role badge prominently
+  const roleEl=document.getElementById('profRoleBadge');
+  if(roleEl){
+    const myRole=userRoleCache[SESSION?.userId]||'member';
+    const roleBadges={
+      master: `<div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,92,56,.15),rgba(255,140,56,.1));border:1px solid rgba(255,92,56,.4);border-radius:20px;padding:5px 14px">
+        <span style="font-size:.9rem">👑</span>
+        <span style="font-family:'Bebas Neue';letter-spacing:2px;font-size:.85rem;color:var(--accent2)">DONO / MASTER ADMIN</span>
+      </div>`,
+      moderator: `<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(61,155,255,.1);border:1px solid rgba(61,155,255,.3);border-radius:20px;padding:5px 14px">
+        <span style="font-size:.9rem">🛡️</span>
+        <span style="font-family:'Bebas Neue';letter-spacing:2px;font-size:.85rem;color:var(--accent3)">MODERADOR</span>
+      </div>`,
+      vip: `<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);border-radius:20px;padding:5px 14px">
+        <span style="font-size:.9rem">⭐</span>
+        <span style="font-family:'Bebas Neue';letter-spacing:2px;font-size:.85rem;color:var(--accent)">MEMBRO VIP</span>
+      </div>`,
+      member: ''
+    };
+    roleEl.innerHTML=roleBadges[myRole]||'';
+
+    // If role not loaded yet, fetch and update
+    if(myRole==='member' && SESSION?.userId){
+      loadMyRole().then(()=>{
+        const updated=userRoleCache[SESSION.userId];
+        if(updated && updated!=='member') roleEl.innerHTML=roleBadges[updated]||'';
+      });
+    }
+  }
+
+  document.getElementById('pi1').textContent=P.w+'kg';
+  document.getElementById('pi2').textContent=P.gw+'kg';
+  document.getElementById('pi3').textContent=P.imc;
+  document.getElementById('pi4').textContent=P.cal;
   const dot=document.getElementById('supaDot'),txt=document.getElementById('supaText');
   if(dot)dot.className='suba-dot'+(dbOK?'':' off');
   if(txt)txt.textContent='';
@@ -2350,8 +2706,172 @@ async function doResetPass(){
   btn.disabled=false; btn.textContent='REDEFINIR SENHA';
 }
 
+// ═══════════════════════════════════
+//  SUGESTÕES
+// ═══════════════════════════════════
+async function loadSugestoes(){
+  if(!sb||!SESSION) return;
+  // Load user's own suggestions
+  try{
+    const {data}=await sb.from('sugestoes')
+      .select('*').eq('user_id',SESSION.userId)
+      .order('created_at',{ascending:false});
+    renderMinhasSugestoes(data||[]);
+  }catch(e){}
+  // If admin, load all suggestions
+  const myRole = userRoleCache[SESSION.userId];
+  if(myRole==='master'||myRole==='moderator'||myRole==='owner'){
+    document.getElementById('adminSugestoesPanel').style.display='block';
+    try{
+      const {data}=await sb.from('sugestoes')
+        .select('*,app_users(name,email)')
+        .order('created_at',{ascending:false});
+      renderTodasSugestoes(data||[]);
+    }catch(e){}
+  }
+}
+
+function renderMinhasSugestoes(list){
+  const el=document.getElementById('minhasSugestoes');
+  if(!list.length){
+    el.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:.78rem;padding:16px">Você ainda não enviou nenhuma sugestão.</div>`;
+    return;
+  }
+  const catIcons={'funcionalidade':'⚡','melhoria':'✨','bug':'🐛','conteudo':'📚','outro':'💬'};
+  const statusColors={'pendente':'var(--gold)','visto':'var(--accent3)','implementado':'var(--accent)'};
+  const statusLabels={'pendente':'Pendente','visto':'Visto pelo time','implementado':'Implementado!'};
+  el.innerHTML=list.map(s=>`
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">${catIcons[s.categoria]||'💬'} ${s.categoria}</div>
+        <div style="font-size:.62rem;font-weight:700;padding:2px 10px;border-radius:20px;background:rgba(0,0,0,.2);color:${statusColors[s.status]||'var(--gold)'}">${statusLabels[s.status]||'Pendente'}</div>
+      </div>
+      <div style="font-size:.84rem;color:var(--text);line-height:1.6">${s.texto}</div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:8px">${new Date(s.created_at).toLocaleDateString('pt-BR')}</div>
+      ${s.resposta_admin?`<div style="background:rgba(0,229,160,.06);border-left:3px solid var(--accent);padding:8px 12px;margin-top:10px;font-size:.76rem;color:var(--accent);line-height:1.5;border-radius:0 8px 8px 0">💬 Time Meta Fit: ${s.resposta_admin}</div>`:''}
+    </div>`).join('');
+}
+
+function renderTodasSugestoes(list){
+  const el=document.getElementById('todasSugestoes');
+  if(!list.length){el.innerHTML=`<div style="color:var(--muted);font-size:.78rem;padding:10px">Nenhuma sugestão ainda.</div>`;return;}
+  const catIcons={'funcionalidade':'⚡','melhoria':'✨','bug':'🐛','conteudo':'📚','outro':'💬'};
+  el.innerHTML=list.map(s=>`
+    <div style="background:var(--card);border:1px solid rgba(255,92,56,.2);border-radius:13px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:.7rem;font-weight:700;color:var(--accent2)">${s.app_users?.name||'Usuário'} · ${s.app_users?.email||''}</div>
+        <div style="font-size:.6rem;color:var(--muted)">${new Date(s.created_at).toLocaleDateString('pt-BR')}</div>
+      </div>
+      <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">${catIcons[s.categoria]||'💬'} ${s.categoria}</div>
+      <div style="font-size:.84rem;color:var(--text);line-height:1.6;margin-bottom:10px">${s.texto}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button onclick="updateSugestaoStatus('${s.id}','visto')" style="background:rgba(79,255,158,.1);border:1px solid rgba(79,255,158,.3);color:var(--accent3);font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer">✓ Marcar visto</button>
+        <button onclick="updateSugestaoStatus('${s.id}','implementado')" style="background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.3);color:var(--accent);font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer">🚀 Implementado</button>
+        <button onclick="responderSugestao('${s.id}')" style="background:rgba(61,155,255,.1);border:1px solid rgba(61,155,255,.3);color:var(--accent3);font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer">💬 Responder</button>
+      </div>
+    </div>`).join('');
+}
+
+async function enviarSugestao(){
+  const txt=document.getElementById('sugestaoText').value.trim();
+  const cat=document.getElementById('sugestaoCategoria').value;
+  if(!txt){showToast('Escreva sua sugestão primeiro','err');return;}
+  if(!sb||!SESSION){showToast('Faça login primeiro','err');return;}
+  try{
+    await sb.from('sugestoes').insert([{
+      user_id:SESSION.userId,texto:txt,categoria:cat,status:'pendente'
+    }]);
+    document.getElementById('sugestaoText').value='';
+    showToast('💡 Sugestão enviada! Obrigado!','ok');
+    loadSugestoes();
+  }catch(e){showToast('Erro ao enviar: '+e.message,'err');}
+}
+
+async function updateSugestaoStatus(id,status){
+  try{
+    await sb.from('sugestoes').update({status}).eq('id',id);
+    showToast('✅ Status atualizado!','ok');
+    loadSugestoes();
+  }catch(e){showToast('Erro: '+e.message,'err');}
+}
+
+async function responderSugestao(id){
+  const resp=prompt('Escreva uma resposta para o usuário:');
+  if(!resp)return;
+  try{
+    await sb.from('sugestoes').update({resposta_admin:resp,status:'visto'}).eq('id',id);
+    showToast('💬 Resposta enviada!','ok');
+    loadSugestoes();
+  }catch(e){showToast('Erro: '+e.message,'err');}
+}
+
 // Only render onboarding step when actually needed — NOT on page load
 // renderStep() is called explicitly from startGenerate() and loadUserProfile()
+
+// ═══════════════════════════════════
+//  TUTORIAL PRIMEIRO ACESSO
+// ═══════════════════════════════════
+let tutStep = 0;
+const TUT_TOTAL = 5;
+const TUT_KEY = () => `mf_tutorial_done_${SESSION?.userId}`;
+
+function showTutorial(){
+  tutStep = 0;
+  renderTutStep();
+  goTo('tutorial');
+}
+
+function renderTutStep(){
+  // Move track
+  const track = document.getElementById('tutTrack');
+  if(track) track.style.transform = `translateX(-${tutStep * 100}%)`;
+
+  // Update dots
+  const dots = document.querySelectorAll('.tut-dot');
+  dots.forEach((d, i) => {
+    d.className = 'tut-dot';
+    if(i < tutStep) d.classList.add('done');
+    else if(i === tutStep) d.classList.add('active');
+  });
+
+  // Update button
+  const btn = document.getElementById('tutBtn');
+  if(btn){
+    if(tutStep === TUT_TOTAL - 1){
+      btn.textContent = 'GERAR MEU PLANO 🚀';
+      btn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent3))';
+    } else {
+      btn.textContent = 'PRÓXIMO →';
+      btn.style.background = 'var(--accent)';
+    }
+  }
+}
+
+function tutNext(){
+  if(tutStep < TUT_TOTAL - 1){
+    tutStep++;
+    renderTutStep();
+  } else {
+    tutFinish();
+  }
+}
+
+function tutSkip(){
+  tutFinish();
+}
+
+function tutFinish(){
+  // Mark tutorial as done for this user
+  try{ localStorage.setItem(TUT_KEY(), '1'); }catch(_){}
+  // Go to onboarding
+  obStep = 0;
+  renderStep();
+  goTo('onboarding');
+}
+
+function shouldShowTutorial(){
+  try{ return !localStorage.getItem(TUT_KEY()); }catch(_){ return false; }
+}
 </script>
 </body>
 </html>
