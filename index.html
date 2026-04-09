@@ -41,36 +41,6 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .btn-s-main:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,229,160,.4);}
 .btn-s-sec{background:transparent;color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.88rem;border:1px solid var(--border);padding:12px 30px;border-radius:50px;cursor:pointer;transition:all .2s;}
 .btn-s-sec:hover{border-color:var(--muted);color:var(--text);}
-.btn-s-plans{background:transparent;color:var(--accent);font-family:'Outfit';font-weight:700;font-size:.82rem;border:1px solid rgba(0,229,160,.3);padding:10px 28px;border-radius:50px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
-.btn-s-plans:hover{background:rgba(0,229,160,.08);border-color:var(--accent);}
-/* PLANS MODAL */
-.plans-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
-.plans-overlay.open{display:flex;}
-.plans-sheet{background:#0C1018;border-radius:28px 28px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:0 0 40px;}
-.ps-handle{width:40px;height:4px;background:#1E2D3D;border-radius:2px;margin:14px auto 20px;}
-.ps-header{padding:0 22px 16px;border-bottom:1px solid #1A2535;}
-.ps-title{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:3px;color:var(--text);margin-bottom:3px;}
-.ps-sub{font-size:.75rem;color:var(--muted);}
-.plan-card-modal{margin:14px 16px 0;border-radius:18px;padding:20px;border:1px solid #1A2535;position:relative;overflow:hidden;}
-.pcm-basic{background:linear-gradient(135deg,rgba(61,155,255,.08),rgba(61,155,255,.03));border-color:rgba(61,155,255,.25);}
-.pcm-adv{background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(0,229,160,.03));border-color:rgba(0,229,160,.3);}
-.pcm-life{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.03));border-color:rgba(255,215,0,.3);}
-.pcm-popular{position:absolute;top:14px;right:14px;background:var(--accent);color:#080C10;font-size:.58rem;font-weight:900;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;text-transform:uppercase;}
-.pcm-icon{font-size:1.8rem;margin-bottom:10px;}
-.pcm-name{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:2px;margin-bottom:4px;}
-.pcm-price{font-family:'Bebas Neue';font-size:2.2rem;letter-spacing:1px;margin-bottom:4px;}
-.pcm-period{font-size:.68rem;color:var(--muted);letter-spacing:1px;margin-bottom:14px;}
-.pcm-feats{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
-.pcm-feat{display:flex;align-items:center;gap:8px;font-size:.78rem;}
-.pcm-feat-ico{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;flex-shrink:0;}
-.feat-yes{background:rgba(0,229,160,.15);border:1px solid rgba(0,229,160,.3);color:var(--accent);}
-.feat-no{background:rgba(255,255,255,.04);border:1px solid #1A2535;color:var(--muted);}
-.pcm-feat.locked{opacity:.4;}
-.btn-adquirir{width:100%;border:none;font-family:'Outfit';font-weight:800;font-size:.88rem;letter-spacing:1.5px;text-transform:uppercase;padding:13px;border-radius:12px;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center;}
-.btn-adq-blue{background:#3D9BFF;color:#080C10;}
-.btn-adq-green{background:var(--accent);color:#080C10;box-shadow:0 0 20px rgba(0,229,160,.2);}
-.btn-adq-gold{background:linear-gradient(135deg,#FFD700,#ffaa00);color:#080C10;}
-.plans-guarantee{text-align:center;padding:16px 20px 0;font-size:.72rem;color:var(--muted);}
 .s-db-status{margin-top:16px;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px;justify-content:center;}
 .blink-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
@@ -224,7 +194,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .ai-step.done .as-ico{background:var(--accent);color:#080C10;}
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 14px;display:grid;grid-template-columns:repeat(4,1fr);z-index:100;}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 14px;display:grid;grid-template-columns:repeat(var(--nav-cols,4),1fr);z-index:100;}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;transition:all .2s;}
 .ni-ico{font-size:1.2rem;}.ni-lbl{font-size:.56rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;}
 .ni.active .ni-lbl{color:var(--accent);}
@@ -404,6 +374,67 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .qopt.sel{border-color:var(--accent);background:rgba(0,229,160,.08);color:var(--accent);}
 @keyframes fadeIn{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
 .anim{animation:fadeIn .32s ease both;}.fade{animation:fadeIn .28s ease both;}
+
+/* ═══ DESAFIO 30 DIAS ═══ */
+#challenge{background:var(--bg);padding-bottom:80px;overflow-y:auto;}
+.ch-hero{background:linear-gradient(135deg,#1a0a00,#0a0c10);padding:20px 20px 0;position:relative;overflow:hidden;}
+.ch-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,92,56,.15) 0%,transparent 60%);}
+.ch-hero-inner{position:relative;z-index:1;}
+.ch-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,92,56,.12);border:1px solid rgba(255,92,56,.35);color:var(--accent2);font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:10px;}
+.ch-title{font-family:'Bebas Neue';font-size:2.8rem;letter-spacing:4px;line-height:.92;margin-bottom:8px;background:linear-gradient(135deg,#FF5C38,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ch-sub{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:16px;}
+/* PROGRESS RING */
+.ch-progress-wrap{display:flex;align-items:center;gap:20px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;}
+.progress-ring{position:relative;width:80px;height:80px;flex-shrink:0;}
+.progress-ring svg{transform:rotate(-90deg);}
+.pr-bg{fill:none;stroke:var(--border);stroke-width:6;}
+.pr-fill{fill:none;stroke:url(#fireGrad);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s ease;}
+.pr-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pr-day{font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:1px;color:var(--accent2);line-height:1;}
+.pr-lbl{font-size:.45rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.ch-stats{flex:1;}
+.ch-stat-row{display:flex;justify-content:space-between;margin-bottom:8px;}
+.ch-stat{text-align:center;}
+.ch-stat-val{font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:1px;}
+.chv-fire{color:var(--accent2);}.chv-green{color:var(--accent);}.chv-gold{color:var(--gold);}
+.ch-stat-lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:2px;}
+.ch-prog-bar{background:var(--surface);border-radius:50px;height:6px;overflow:hidden;margin-top:8px;}
+.ch-prog-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,#FF5C38,#FFD700);transition:width .5s ease;}
+/* WEEK TABS */
+.week-tabs{display:flex;gap:0;padding:0 20px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);margin-bottom:0;}
+.wtab{padding:10px 16px;font-size:.72rem;font-weight:700;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;letter-spacing:.5px;}
+.wtab.active{color:var(--accent2);border-bottom-color:var(--accent2);}
+/* DAY CARDS */
+.week-content{padding:14px 20px 0;}
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s;}
+.day-card.today-ch{border-color:rgba(255,92,56,.4);background:rgba(255,92,56,.04);}
+.day-card.done-ch{opacity:.6;}
+.dc-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;cursor:pointer;}
+.dc-left{display:flex;align-items:center;gap:10px;}
+.dc-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:.9rem;flex-shrink:0;}
+.dc-num-active{background:rgba(255,92,56,.15);border:1px solid rgba(255,92,56,.4);color:var(--accent2);}
+.dc-num-done{background:var(--accent);color:#080C10;}
+.dc-num-locked{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.dc-info-title{font-weight:700;font-size:.84rem;margin-bottom:2px;}
+.dc-info-sub{font-size:.68rem;color:var(--muted);}
+.dc-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;cursor:pointer;transition:all .2s;}
+.dc-check.checked{background:var(--accent);border-color:var(--accent);color:#080C10;}
+.dc-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border);}
+.dc-body.open{display:block;}
+.dc-section{margin-top:12px;}
+.dc-sec-title{font-size:.6rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent2);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.dc-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;font-size:.79rem;color:var(--dim);line-height:1.5;}
+.dc-item-dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);flex-shrink:0;margin-top:6px;}
+.dc-item-dot.green{background:var(--accent);}
+.dc-tip{background:rgba(0,229,160,.06);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 8px 8px 0;font-size:.74rem;color:var(--muted);line-height:1.6;margin-top:10px;}
+/* LOCKED OVERLAY */
+.ch-locked{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;margin:14px 20px;}
+.ch-lock-ico{font-size:2.5rem;margin-bottom:12px;}
+.ch-lock-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:2px;color:var(--gold);margin-bottom:8px;}
+.ch-lock-sub{font-size:.8rem;color:var(--muted);line-height:1.6;}
+/* BTN COMPLETE DAY */
+.btn-complete-day{width:100%;background:linear-gradient(135deg,var(--accent2),#ff8c38);color:#fff;font-family:'Outfit';font-weight:800;font-size:.85rem;letter-spacing:1px;border:none;padding:12px;border-radius:10px;cursor:pointer;margin-top:12px;transition:all .2s;}
+.btn-complete-day:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,92,56,.3);}
 </style>
 </head>
 <body>
@@ -418,7 +449,6 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
     <div class="s-btns">
       <button class="btn-s-main" id="btnRegister" onclick="goTo('register')">CRIAR CONTA</button>
       <button class="btn-s-sec" id="btnLogin" onclick="goTo('login')">JÁ TENHO CONTA</button>
-      <button class="btn-s-plans" onclick="openPlans()">📋 Confira os planos</button>
     </div>
   </div>
 </div>
@@ -887,10 +917,81 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
   </div>
 </div>
 
+
+<!-- DESAFIO 30 DIAS -->
+<div id="challenge" class="screen">
+  <div class="screen-hdr">
+    <div class="back-btn" onclick="switchTab('dashboard')">←</div>
+    <div class="shdr-info"><h2>DESAFIO</h2><p>30 dias para transformar seu corpo</p></div>
+  </div>
+
+  <!-- HERO PROGRESS -->
+  <div class="ch-hero">
+    <div class="ch-hero-inner">
+      <div class="ch-badge">🔥 Desafio 30 Dias</div>
+      <div class="ch-title">TRANSFORMAÇÃO<br>TOTAL</div>
+      <div class="ch-sub">Treinos intensos, cardio diário e dieta rigorosa — mas sem passar fome. Resultado máximo em 30 dias.</div>
+    </div>
+  </div>
+
+  <!-- LOCKED para básico -->
+  <div id="ch-locked-msg" style="display:none">
+    <div class="ch-locked">
+      <div class="ch-lock-ico">🔒</div>
+      <div class="ch-lock-title">PLANO AVANÇADO</div>
+      <p class="ch-lock-sub">O Desafio 30 Dias está disponível exclusivamente no Plano Avançado. Faça upgrade para desbloquear essa experiência!</p>
+    </div>
+  </div>
+
+  <!-- CONTENT para avançado -->
+  <div id="ch-content" style="display:none">
+    <div style="padding:14px 20px 0">
+      <!-- PROGRESS -->
+      <div class="ch-progress-wrap">
+        <div class="progress-ring">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <defs>
+              <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#FF5C38"/>
+                <stop offset="100%" style="stop-color:#FFD700"/>
+              </linearGradient>
+            </defs>
+            <circle class="pr-bg" cx="40" cy="40" r="34"/>
+            <circle class="pr-fill" cx="40" cy="40" r="34" id="progressCircle"
+              stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+          </svg>
+          <div class="pr-text">
+            <div class="pr-day" id="chCurrentDay">0</div>
+            <div class="pr-lbl">de 30</div>
+          </div>
+        </div>
+        <div class="ch-stats">
+          <div class="ch-stat-row">
+            <div class="ch-stat"><div class="ch-stat-val chv-fire" id="chStreak">0🔥</div><div class="ch-stat-lbl">Sequência</div></div>
+            <div class="ch-stat"><div class="ch-stat-val chv-green" id="chDone">0</div><div class="ch-stat-lbl">Dias completos</div></div>
+            <div class="ch-stat"><div class="ch-stat-val chv-gold" id="chLeft">30</div><div class="ch-stat-lbl">Restantes</div></div>
+          </div>
+          <div class="ch-prog-bar"><div class="ch-prog-fill" id="chProgBar" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK TABS -->
+    <div class="week-tabs">
+      <div class="wtab active" onclick="switchChWeek(1,this)">Semana 1</div>
+      <div class="wtab" onclick="switchChWeek(2,this)">Semana 2</div>
+      <div class="wtab" onclick="switchChWeek(3,this)">Semana 3</div>
+      <div class="wtab" onclick="switchChWeek(4,this)">Semana 4</div>
+    </div>
+    <div class="week-content" id="chWeekContent"></div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bnav" id="bottomNav" style="display:none">
   <div class="ni active" onclick="switchTab('dashboard')" id="nav-dashboard"><div class="ni-ico">🏠</div><div class="ni-lbl">Início</div></div>
   <div class="ni" onclick="switchTab('training')" id="nav-training"><div class="ni-ico">🏋️</div><div class="ni-lbl">Treinos</div></div>
+  <div class="ni" id="nav-challenge" onclick="switchTab('challenge')" style="display:none"><div class="ni-ico">🔥</div><div class="ni-lbl">Desafio</div></div>
   <div class="ni" onclick="switchTab('community')" id="nav-community"><div class="ni-ico">👥</div><div class="ni-lbl">Comunidade</div></div>
   <div class="ni" onclick="switchTab('profile')" id="nav-profile"><div class="ni-ico">👤</div><div class="ni-lbl">Perfil</div></div>
 </div>
@@ -1660,7 +1761,7 @@ function buildPlan(){
 // ═══════════════════════════════════
 //  FILL SCREENS
 // ═══════════════════════════════════
-function fillAll(){fillDash();fillTraining();fillDiet();fillProfile();}
+function fillAll(){fillDash();fillTraining();fillDiet();fillProfile();initChallenge();}
 
 function fillDash(){
   const name=(SESSION?.name||U.name||'Atleta').toUpperCase().split(' ')[0];
@@ -2437,6 +2538,7 @@ function switchTab(tab){
   if(tab==='profile')fillProfile();
   if(tab==='training')renderDayTabs();
   if(tab==='diet')fillDiet();
+  if(tab==='challenge')initChallenge();
   if(tab==='community'){ commMainTab='feed'; loadCommunity(); }
 }
 
@@ -2525,6 +2627,9 @@ function fillProfile(){
   document.getElementById('pi2').textContent=P.gw+'kg';
   document.getElementById('pi3').textContent=P.imc;
   document.getElementById('pi4').textContent=P.cal;
+  // Show challenge tab for avancado
+  const chNav=document.getElementById('nav-challenge');
+  if(chNav){ if(SESSION?.plan==='avancado'){chNav.style.display='flex';document.getElementById('bottomNav').style.setProperty('--nav-cols','5');}else{chNav.style.display='none';document.getElementById('bottomNav').style.setProperty('--nav-cols','4');}}
   const dot=document.getElementById('supaDot'),txt=document.getElementById('supaText');
   if(dot)dot.className='suba-dot'+(dbOK?'':' off');
   if(txt)txt.textContent='';
@@ -2904,77 +3009,153 @@ function shouldShowTutorial(){
   try{ return !localStorage.getItem(TUT_KEY()); }catch(_){ return false; }
 }
 
-function openPlans(){ document.getElementById('plansOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closePlans(){ document.getElementById('plansOverlay').classList.remove('open'); document.body.style.overflow=''; }
+// ═══════════════════════════════════
+//  DESAFIO 30 DIAS
+// ═══════════════════════════════════
+let chCompletedDays = new Set(JSON.parse(localStorage.getItem('mf_challenge_days')||'[]'));
+let chCurrentWeek = 1;
+
+// 30-day plan data
+const CH_PLAN = [
+  // SEMANA 1 — Adaptação
+  {day:1,title:'Início do Desafio',focus:'Full Body + Cardio Leve',treino:['Agachamento 4x15','Flexão 3x12','Remada com halteres 3x12','Prancha 3x45s','Caminhada rápida 20min'],dieta:['Café: Aveia 50g + banana + ovo mexido 3un','Lanche: Maçã + castanhas 20g','Almoço: Frango 200g + arroz integral 80g + salada','Pré-treino: Batata doce 150g','Jantar: Atum 180g + abobrinha refogada','Ceia: Iogurte grego 150g'],tip:'Foque na execução correta. Qualidade > quantidade.'},
+  {day:2,title:'Cardio & Core',focus:'Cardio + Abdômen',treino:['Corrida ou bike 30min (moderado)','Abdominal crunch 4x20','Elevação de pernas 3x15','Mountain climbers 3x30s','Alongamento 10min'],dieta:['Café: Omelete 3 ovos + espinafre + pão integral 2 fatias','Lanche: Whey ou iogurte + frutas vermelhas','Almoço: Carne magra 180g + purê de batata doce + legumes','Pré-treino: Banana + pasta de amendoim 1cs','Jantar: Frango 160g + brócolis + cenoura','Ceia: Cottage 100g'],tip:'No dia de cardio, beba pelo menos 2,5L de água.'},
+  {day:3,title:'Membros Superiores',focus:'Peito, Ombro e Tríceps',treino:['Supino com halteres 4x12','Desenvolvimento ombro 3x12','Flexão diamante 3x10','Elevação lateral 3x15','Tríceps testa 3x12','HIIT 10min (30s on/30s off)'],dieta:['Café: Panqueca de banana + proteína + mel','Lanche: Peito de peru + queijo branco','Almoço: Frango 200g + macarrão integral 60g + tomate','Pré-treino: Batata doce 120g','Jantar: Peixe branco 200g + arroz 70g + salada verde','Ceia: Iogurte proteico'],tip:'Descanso de 60-90s entre séries para intensidade máxima.'},
+  {day:4,title:'Membros Inferiores',focus:'Pernas e Glúteos',treino:['Agachamento com peso 4x15','Avanço alternado 3x12 cada','Leg press (casa: cadeira búlgara) 3x12','Elevação de quadril 4x20','Panturrilha 3x20','Corrida leve 15min'],dieta:['Café: Ovo cozido 3un + tapioca + cottage','Lanche: Maçã + nozes','Almoço: Contrafilé magro 180g + batata doce 150g + salada','Pré-treino: Arroz integral 80g','Jantar: Frango 180g + abobrinha + cenoura','Ceia: Iogurte grego + chia'],tip:'Leg day é o treino mais difícil — mas queima mais calorias. Não pule!'},
+  {day:5,title:'Costas & Bíceps',focus:'Costas, Bíceps + Cardio',treino:['Remada curvada 4x12','Puxada frontal ou remada alta 3x12','Rosca direta 3x12','Rosca martelo 3x10','Puxada com elástico 3x15','Caminhada rápida 25min'],dieta:['Café: Mingau de aveia proteico (whey + banana)','Lanche: Atum + torrada integral','Almoço: Frango 200g + feijão 80g + arroz 70g + salada','Pré-treino: Batata doce 120g + café preto','Jantar: Tilápia 200g + brócolis + azeite','Ceia: Leite desnatado + canela'],tip:'Costas é o músculo mais volumoso do tronco — priorize a contração.'},
+  {day:6,title:'HIIT + Core Intenso',focus:'Queima de gordura intensa',treino:['HIIT 20min (Burpee / Agachamento / Flexão / Abs — 40s on/20s off)','Prancha lateral 3x30s cada lado','Russian twist 3x20','Superman 3x15','Abdominal bicicleta 3x20'],dieta:['Café: Vitamina proteica (whey + leite + banana + aveia)','Lanche: Castanhas 25g + 1 fruta','Almoço: Frango 180g + quinoa 70g + salada completa','Pré-treino: Batata doce + café','Jantar: Ovo mexido 4un + espinafre refogado','Ceia: Iogurte grego + chia 1cs'],tip:'HIIT queima gordura por até 24h após o treino. Vale o esforço!'},
+  {day:7,title:'Descanso Ativo 🌿',focus:'Recuperação + Mobilidade',treino:['Caminhada leve 30min','Alongamento completo 20min','Yoga ou respiração 10min','Rolar com foam roller (se tiver)'],dieta:['Café: Pão integral + pasta de amendoim + ovo','Lanche: Frutas variadas','Almoço: Salmão 180g + arroz integral + salada','Lanche tarde: Iogurte + granola sem açúcar','Jantar: Sopa de legumes com frango desfiado','Ceia: Chá + castanhas'],tip:'Descanso é tão importante quanto o treino. Seu músculo cresce aqui.'},
+
+  // SEMANA 2 — Intensificação
+  {day:8,title:'Full Body Intenso',focus:'Full Body com Progressão',treino:['Agachamento 4x18','Flexão com pausa 4x12','Remada 4x12','Prancha 3x60s','HIIT 15min'],dieta:['Café: 3 ovos mexidos + aveia + banana','Lanche: Whey + maçã','Almoço: Frango 220g + batata doce 160g + salada','Pré: Banana + amendoim','Jantar: Atum 180g + legumes','Ceia: Iogurte grego'],tip:'Segunda semana: aumente 10-15% da carga ou reps.'},
+  {day:9,title:'Cardio HIIT',focus:'Queima máxima de gordura',treino:['Aquecimento 5min','HIIT 25min (8 rounds: 40s/20s)','Corrida 15min moderada','Core 10min'],dieta:['Café: Vitamina proteica + aveia','Lanche: Maçã + castanhas','Almoço: Carne magra 200g + arroz + salada','Pré: Café + banana','Jantar: Frango + brócolis + azeite','Ceia: Cottage'],tip:'Varie os exercícios do HIIT para não enjoar: agachamento, burpee, polichinelo, corrida no lugar.'},
+  {day:10,title:'Peito & Ombro',focus:'Peito, Ombro, Tríceps',treino:['Supino inclinado 4x12','Crossover/Fly 3x15','Desenvolvimento Arnold 4x12','Elevação lateral 3x15','Dips ou banco 3x12','HIIT 12min'],dieta:['Café: Tapioca + frango desfiado + ovo','Lanche: Ricota + torrada','Almoço: Frango 200g + macarrão integral + tomate cereja','Pré: Batata doce','Jantar: Peixe 200g + legumes','Ceia: Iogurte'],tip:''},
+  {day:11,title:'Pernas Pesado',focus:'Pernas com Volume Alto',treino:['Agachamento 5x15','Cadeira extensora/Leg 4x15','Elevação de quadril 4x25','Avanço com halteres 3x12','Panturrilha 4x20','Corrida 10min'],dieta:['Café: Omelete + batata doce 100g','Lanche: Maçã + nozes','Almoço: Contrafilé + arroz integral + feijão + salada','Pré: Banana + café','Jantar: Frango 180g + abobrinha','Ceia: Leite + canela'],tip:'Pernas representam 60% da massa muscular. Não pule nunca.'},
+  {day:12,title:'Costas & Bíceps',focus:'Volume + Cardio',treino:['Barra fixa ou remada 4x10','Remada curvada 4x12','Puxada alta 3x15','Rosca direta 4x12','Rosca concentrada 3x12','Caminhada rápida 30min'],dieta:['Café: Mingau de aveia + whey + frutas vermelhas','Lanche: Atum + torrada','Almoço: Salmão 180g + quinoa + salada','Pré: Batata doce','Jantar: Frango + brócolis','Ceia: Iogurte grego + chia'],tip:''},
+  {day:13,title:'HIIT + Abs',focus:'Cardio intenso + core',treino:['HIIT 30min (10 rounds)','Plank variações 5min','Russian twist 4x20','Elevação de pernas 4x15','Abdominal bicicleta 4x20'],dieta:['Café: Vitamina proteica','Lanche: 1 fruta + castanhas','Almoço: Frango 180g + arroz integral 70g + salada','Pré: Café + banana','Jantar: Ovo 4un + espinafre','Ceia: Iogurte'],tip:''},
+  {day:14,title:'Descanso Ativo 🌿',focus:'Recuperação + Reflexão',treino:['Caminhada 40min','Alongamento global 25min','Respiração/meditação 5min'],dieta:['Café: Ovos + frutas','Almoço: Frango + salada + arroz','Lanche: Iogurte + granola','Jantar: Sopa proteica','Ceia: Leite + canela'],tip:'Você completou 2 semanas! Avalie: está vendo resultado? Ajuste a alimentação se necessário.'},
+
+  // SEMANA 3 — Pico
+  {day:15,title:'Full Body Explosivo',focus:'Força + Potência',treino:['Agachamento salto 4x10','Flexão explosiva 4x10','Remada rápida 4x12','Burpee 3x10','HIIT 20min'],dieta:['Café: 3 ovos + aveia 60g + banana','Lanche: Whey + maçã','Almoço: Frango 220g + batata doce 180g + salada','Pré: Batata + café','Jantar: Peixe 200g + legumes','Ceia: Iogurte grego'],tip:'Semana 3 é a mais intensa. Se sentir dor (não desconforto), descanse.'},
+  {day:16,title:'Cardio Longo',focus:'Resistência cardiovascular',treino:['Corrida ou bike 45min (ritmo moderado)','Core leve 15min','Alongamento 10min'],dieta:['Café: Pão integral + ovos + frutas','Lanche: Castanhas + banana','Almoço: Carne magra 200g + arroz + salada','Pré: Banana','Jantar: Frango + legumes','Ceia: Iogurte'],tip:''},
+  {day:17,title:'Peito & Tríceps',focus:'Volume Máximo Superior',treino:['Supino plano 5x12','Supino inclinado 4x12','Fly halteres 3x15','Dips 4x10','Tríceps corda/testa 3x12','HIIT 15min'],dieta:['Café: Tapioca proteica + ovo','Lanche: Atum + torrada','Almoço: Frango 220g + macarrão integral + tomate','Pré: Batata doce','Jantar: Atum 180g + brócolis','Ceia: Cottage'],tip:''},
+  {day:18,title:'Pernas & Glúteos',focus:'Volume máximo inferior',treino:['Agachamento livre 5x15','Leg press ou búlgaro 4x12','Extensão de quadril 4x25','Avanço lateral 3x12','Panturrilha 5x20','Corrida 15min'],dieta:['Café: Omelete 3un + batata doce 120g','Lanche: Maçã + nozes','Almoço: Bife magro + arroz + feijão + salada','Pré: Arroz integral 80g','Jantar: Frango 180g + abobrinha','Ceia: Leite + chia'],tip:''},
+  {day:19,title:'Costas & Bíceps',focus:'Costas completa + cardio',treino:['Pull-up/remada 5x10','Remada unilateral 4x12','Puxada 3x15','Rosca direta 4x12','Rosca scott 3x12','Caminhada rápida 35min'],dieta:['Café: Mingau + whey + frutas','Lanche: Queijo + torrada','Almoço: Salmão 200g + quinoa + salada','Pré: Banana + café','Jantar: Frango + legumes','Ceia: Iogurte grego'],tip:''},
+  {day:20,title:'HIIT Máximo',focus:'Queima total — o treino mais difícil',treino:['Aquecimento 5min','HIIT 35min (12 rounds — 45s on/15s off)','Core 15min','Alongamento 10min'],dieta:['Café: Vitamina proteica 400ml','Lanche: 1 fruta + castanhas','Almoço: Frango 180g + arroz + salada completa','Pré: Café + banana','Jantar: Ovos 4un + espinafre + azeite','Ceia: Iogurte grego'],tip:'Dia mais intenso do desafio. Dê o seu máximo — você vai conseguir.'},
+  {day:21,title:'Descanso Ativo 🌿',focus:'Recuperação + Avaliação',treino:['Caminhada leve 40min','Yoga ou alongamento 30min'],dieta:['Café: Ovos + frutas','Almoço: Proteína + salada + carboidrato','Jantar: Sopa proteica','Ceia: Chá + castanhas'],tip:'3 semanas concluídas! Tire uma foto de evolução e compare com o início.'},
+
+  // SEMANA 4 — Finalização
+  {day:22,title:'Full Body Final',focus:'Full Body com máxima intensidade',treino:['Agachamento 5x18','Flexão 5x15','Remada 5x12','Burpee 4x12','HIIT 20min','Core 10min'],dieta:['Café: 3 ovos + aveia 60g + banana','Lanche: Whey + fruta','Almoço: Frango 230g + batata doce 180g + salada','Pré: Batata + café','Jantar: Peixe 200g + legumes','Ceia: Iogurte grego'],tip:'Última semana. Coloque tudo que tem.'},
+  {day:23,title:'Cardio Final',focus:'45 min de cardio intenso',treino:['Corrida ou bike 45min (acelera os últimos 10min)','Core 15min','Respiração 5min'],dieta:['Café: Mingau proteico','Lanche: Maçã + castanhas','Almoço: Carne magra + arroz + salada','Pré: Banana','Jantar: Frango + brócolis + azeite','Ceia: Cottage'],tip:''},
+  {day:24,title:'Peito & Ombro Final',focus:'Máxima carga superior',treino:['Supino 5x12','Desenvolvimento 5x12','Elevação lateral 4x15','Dips 4x12','HIIT 15min'],dieta:['Café: Tapioca + frango + ovo','Lanche: Atum + torrada','Almoço: Frango + macarrão integral + tomate','Pré: Batata doce + café','Jantar: Tilápia + legumes','Ceia: Iogurte'],tip:''},
+  {day:25,title:'Pernas Finais',focus:'Volume máximo de pernas',treino:['Agachamento 6x15','Leg press/búlgaro 4x15','Elevação de quadril 5x25','Avanço 3x12','Panturrilha 5x25','Corrida 20min'],dieta:['Café: Omelete + batata doce','Lanche: Fruta + nozes','Almoço: Bife + arroz + feijão + salada','Pré: Arroz 80g','Jantar: Frango + abobrinha','Ceia: Leite + canela'],tip:''},
+  {day:26,title:'Costas & Bíceps Final',focus:'Força máxima',treino:['Remada pesada 5x10','Barra ou puxada 4x10','Rosca direta 5x12','Rosca martelo 4x12','Caminhada 40min'],dieta:['Café: Mingau + whey + banana','Lanche: Queijo + torrada','Almoço: Salmão + quinoa + salada','Pré: Café + batata','Jantar: Frango + brócolis','Ceia: Iogurte grego + chia'],tip:''},
+  {day:27,title:'HIIT Final',focus:'Último treino cardio pesado',treino:['Aquecimento 5min','HIIT 40min (15 rounds — máxima intensidade)','Core 15min','Alongamento completo 15min'],dieta:['Café: Vitamina proteica','Lanche: Fruta + castanhas','Almoço: Frango 200g + arroz + salada','Pré: Banana + café','Jantar: Ovos 4un + espinafre','Ceia: Iogurte'],tip:'Último HIIT do desafio. Dê tudo de si.'},
+  {day:28,title:'Full Body Legado',focus:'Último treino musculação',treino:['Agachamento 4x20','Flexão 4x15','Remada 4x15','HIIT 20min','Core completo 15min'],dieta:['Café: Panqueca proteica + mel','Lanche: Whey + fruta','Almoço: Frango 200g + batata doce + salada','Pré: Batata + café','Jantar: Salmão + legumes','Ceia: Cottage'],tip:'Penúltimo dia — você está quase lá!'},
+  {day:29,title:'Cardio & Relaxamento',focus:'Cardio leve + recuperação',treino:['Caminhada 45min','Alongamento 20min','Meditação/respiração 10min'],dieta:['Café: Ovos + frutas + aveia','Almoço: Proteína + carboidrato + salada','Lanche: Iogurte + granola','Jantar: Sopa proteica leve','Ceia: Chá'],tip:'Prepare-se mentalmente para o último dia. Você está quase!'},
+  {day:30,title:'🏆 DIA FINAL!',focus:'Celebração da transformação',treino:['Treino livre — faça o que mais gostou','Foto de evolução antes e depois','Medidas finais (peso, cintura, quadril)','Celebre sua conquista! 🎉'],dieta:['Café: Seu favorito saudável','Almoço: Refeição completa favorita','Jantar: Refeição leve com proteína','Bônus: Uma sobremesa que você mereça!'],tip:'PARABÉNS! Você completou o Desafio 30 Dias Meta Fit. Agora mantenha os hábitos.'},
+];
+
+function initChallenge(){
+  const isAdv = SESSION?.plan==='avancado';
+  document.getElementById('ch-locked-msg').style.display = isAdv ? 'none' : 'block';
+  document.getElementById('ch-content').style.display = isAdv ? 'block' : 'none';
+  if(!isAdv) return;
+  updateChStats();
+  renderChWeek(chCurrentWeek);
+}
+
+function updateChStats(){
+  const done = chCompletedDays.size;
+  const pct = (done/30)*100;
+  const circ = 213.6;
+  const offset = circ - (circ * pct/100);
+  const circle = document.getElementById('progressCircle');
+  if(circle) circle.style.strokeDashoffset = offset;
+  const dayEl = document.getElementById('chCurrentDay');
+  if(dayEl) dayEl.textContent = done;
+  const doneEl = document.getElementById('chDone');
+  if(doneEl) doneEl.textContent = done;
+  const leftEl = document.getElementById('chLeft');
+  if(leftEl) leftEl.textContent = 30 - done;
+  const barEl = document.getElementById('chProgBar');
+  if(barEl) barEl.style.width = pct+'%';
+  // Streak calc
+  let streak = 0;
+  for(let i=done;i>=1;i--){
+    if(chCompletedDays.has(i)) streak++;
+    else break;
+  }
+  const streakEl = document.getElementById('chStreak');
+  if(streakEl) streakEl.textContent = streak+'🔥';
+}
+
+function switchChWeek(w, el){
+  chCurrentWeek = w;
+  document.querySelectorAll('.wtab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderChWeek(w);
+}
+
+function renderChWeek(w){
+  const start = (w-1)*7;
+  const days = CH_PLAN.slice(start, start+7);
+  const done = chCompletedDays.size;
+  const el = document.getElementById('chWeekContent');
+  if(!el) return;
+  el.innerHTML = days.map(d=>{
+    const isDone = chCompletedDays.has(d.day);
+    const isToday = d.day === done+1;
+    const isLocked = d.day > done+1;
+    const numClass = isDone?'dc-num-done':isToday?'dc-num-active':'dc-num-locked';
+    const cardClass = isToday?'today-ch':isDone?'done-ch':'';
+    return `<div class="day-card ${cardClass}" id="chday_${d.day}">
+      <div class="dc-hdr" onclick="toggleChDay(${d.day})">
+        <div class="dc-left">
+          <div class="dc-num ${numClass}">${isDone?'✓':d.day}</div>
+          <div>
+            <div class="dc-info-title">${d.title}</div>
+            <div class="dc-info-sub">${d.focus}</div>
+          </div>
+        </div>
+        ${!isLocked?`<div class="dc-check ${isDone?'checked':''}" onclick="event.stopPropagation();toggleChComplete(${d.day})">${isDone?'✓':''}</div>`:'<span style="font-size:.7rem;color:var(--muted)">🔒</span>'}
+      </div>
+      ${!isLocked?`<div class="dc-body ${isToday?'open':''}" id="chbody_${d.day}">
+        <div class="dc-section">
+          <div class="dc-sec-title">🏋️ TREINO DO DIA</div>
+          ${d.treino.map(t=>`<div class="dc-item"><div class="dc-item-dot"></div>${t}</div>`).join('')}
+        </div>
+        <div class="dc-section">
+          <div class="dc-sec-title">🥗 DIETA DO DIA</div>
+          ${d.dieta.map(r=>`<div class="dc-item"><div class="dc-item-dot green"></div>${r}</div>`).join('')}
+        </div>
+        ${d.tip?`<div class="dc-tip">💡 ${d.tip}</div>`:''}
+        ${!isDone&&isToday?`<button class="btn-complete-day" onclick="toggleChComplete(${d.day})">✅ MARCAR DIA ${d.day} COMO CONCLUÍDO</button>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function toggleChDay(day){
+  const body = document.getElementById('chbody_'+day);
+  if(body) body.classList.toggle('open');
+}
+
+function toggleChComplete(day){
+  if(chCompletedDays.has(day)){
+    chCompletedDays.delete(day);
+  } else {
+    chCompletedDays.add(day);
+    if(day===30){
+      showToast('🏆 PARABÉNS! Desafio 30 Dias concluído!','ok');
+    } else {
+      showToast(`🔥 Dia ${day} concluído! Continue assim!`,'ok');
+    }
+  }
+  localStorage.setItem('mf_challenge_days', JSON.stringify([...chCompletedDays]));
+  updateChStats();
+  renderChWeek(chCurrentWeek);
+}
 </script>
-
-<!-- PLANS MODAL -->
-<div class="plans-overlay" id="plansOverlay" onclick="if(event.target===this)closePlans()">
-  <div class="plans-sheet">
-    <div class="ps-handle"></div>
-    <div class="ps-header">
-      <div class="ps-title">NOSSOS PLANOS</div>
-      <div class="ps-sub">Escolha o plano ideal para você • 7 dias de garantia em todos</div>
-    </div>
-
-    <!-- BÁSICO -->
-    <div class="plan-card-modal pcm-basic">
-      <div class="pcm-icon">⭐</div>
-      <div class="pcm-name" style="color:#3D9BFF">BÁSICO MENSAL</div>
-      <div class="pcm-price" style="color:#3D9BFF">R$19,90</div>
-      <div class="pcm-period">por mês · renovação mensal</div>
-      <div class="pcm-feats">
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Treino semanal personalizado</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Academia ou em casa</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Dicas de execução por exercício</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Progresso semanal</div>
-        <div class="pcm-feat locked"><div class="pcm-feat-ico feat-no">✗</div>Dieta com macros e calorias</div>
-        <div class="pcm-feat locked"><div class="pcm-feat-ico feat-no">✗</div>Avaliação física mensal</div>
-        <div class="pcm-feat locked"><div class="pcm-feat-ico feat-no">✗</div>Plano atualizado mensalmente</div>
-      </div>
-      <a href="https://pay.kiwify.com.br/CJsrBgF" target="_blank" class="btn-adquirir btn-adq-blue">ADQUIRIR BÁSICO →</a>
-    </div>
-
-    <!-- AVANÇADO -->
-    <div class="plan-card-modal pcm-adv">
-      <div class="pcm-popular">MAIS POPULAR</div>
-      <div class="pcm-icon">💪</div>
-      <div class="pcm-name" style="color:var(--accent)">AVANÇADO MENSAL</div>
-      <div class="pcm-price" style="color:var(--accent)">R$39,90</div>
-      <div class="pcm-period">por mês · renovação mensal</div>
-      <div class="pcm-feats">
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Treino avançado periodizado</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Academia ou em casa</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Dicas de execução por exercício</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Dieta com macros e calorias</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Avaliação física mensal</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Análise de composição corporal</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Plano ajustado ao seu progresso</div>
-      </div>
-      <a href="https://pay.kiwify.com.br/0UZoj22" target="_blank" class="btn-adquirir btn-adq-green">ADQUIRIR AVANÇADO →</a>
-    </div>
-
-    <!-- VITALÍCIO -->
-    <div class="plan-card-modal pcm-life">
-      <div class="pcm-icon">👑</div>
-      <div class="pcm-name" style="color:#FFD700">AVANÇADO VITALÍCIO</div>
-      <div class="pcm-price" style="color:#FFD700">R$99,90</div>
-      <div class="pcm-period">pagamento único · acesso forever ♾️</div>
-      <div class="pcm-feats">
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Tudo do plano Avançado</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Acesso vitalício — nunca paga de novo</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Avaliações ilimitadas</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Todas as novidades futuras inclusas</div>
-        <div class="pcm-feat"><div class="pcm-feat-ico feat-yes">✓</div>Sem mensalidades nunca mais</div>
-      </div>
-      <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:10px 12px;font-size:.72rem;color:#FFD700;line-height:1.5;margin-bottom:12px;text-align:center">
-        💰 R$39,90 × 12 = R$478,80 — você paga só R$99,90
-      </div>
-      <a href="https://pay.kiwify.com.br/oJrCicS" target="_blank" class="btn-adquirir btn-adq-gold">ADQUIRIR VITALÍCIO →</a>
-    </div>
-
-    <div class="plans-guarantee">🔒 7 dias de garantia total em todos os planos · Cancele quando quiser</div>
-  </div>
-</div>
 </body>
 </html>
