@@ -2531,7 +2531,7 @@ function switchTab(tab){
   if(tab!=='community' && chatPolling){
     clearInterval(chatPolling); chatPolling=null;
   }
-  ['dashboard','training','diet','profile','photo-eval','community'].forEach(t=>{
+  ['dashboard','training','diet','profile','photo-eval','community','challenge'].forEach(t=>{
     const el=document.getElementById(t);if(el)el.classList.toggle('active',t===tab);
     const nav=document.getElementById('nav-'+t);if(nav)nav.classList.toggle('active',t===tab);
   });
@@ -3060,6 +3060,13 @@ function initChallenge(){
   const isAdv = SESSION?.plan==='avancado';
   document.getElementById('ch-locked-msg').style.display = isAdv ? 'none' : 'block';
   document.getElementById('ch-content').style.display = isAdv ? 'block' : 'none';
+  // Show/hide nav tab
+  const chNav = document.getElementById('nav-challenge');
+  if(chNav){
+    chNav.style.display = isAdv ? 'flex' : 'none';
+    const bnav = document.getElementById('bottomNav');
+    if(bnav) bnav.style.gridTemplateColumns = isAdv ? 'repeat(5,1fr)' : 'repeat(4,1fr)';
+  }
   if(!isAdv) return;
   updateChStats();
   renderChWeek(chCurrentWeek);
@@ -3157,5 +3164,18 @@ function toggleChComplete(day){
   renderChWeek(chCurrentWeek);
 }
 </script>
+
+<!-- BOTÃO SUPORTE WHATSAPP -->
+<a href="https://wa.me/5547997282959" target="_blank" id="waSupportBtn"
+   style="position:fixed;bottom:90px;right:16px;z-index:999;
+          width:52px;height:52px;border-radius:50%;
+          background:linear-gradient(135deg,#25D366,#128C7E);
+          display:flex;align-items:center;justify-content:center;
+          box-shadow:0 4px 20px rgba(37,211,102,.4);
+          text-decoration:none;font-size:1.6rem;transition:transform .2s"
+   onmouseover="this.style.transform='scale(1.12)'"
+   onmouseout="this.style.transform='scale(1)'">
+  💬
+</a>
 </body>
 </html>
