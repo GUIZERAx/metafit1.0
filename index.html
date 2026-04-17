@@ -34,9 +34,9 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04);opacity:.5}}
 .splash-in{text-align:center;z-index:1;}
 .s-tag{font-family:'Bebas Neue';letter-spacing:6px;font-size:.82rem;color:var(--accent);display:block;margin-bottom:4px;}
-.splash-in h1{font-family:'Bebas Neue';font-size:5.5rem;letter-spacing:8px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
-.splash-in p{color:var(--muted);font-size:.82rem;margin-top:8px;letter-spacing:3px;text-transform:uppercase;}
-.s-btns{display:flex;flex-direction:column;gap:10px;margin-top:40px;align-items:center;}
+.splash-in h1{font-family:'Bebas Neue';font-size:5rem;letter-spacing:8px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.splash-in p{color:var(--muted);font-size:.82rem;margin-top:4px;letter-spacing:3px;text-transform:uppercase;}
+.s-btns{display:flex;flex-direction:column;gap:10px;margin-top:24px;align-items:center;}
 .btn-s-main{background:var(--accent);color:#080C10;font-family:'Outfit';font-weight:800;font-size:1rem;letter-spacing:2px;text-transform:uppercase;border:none;padding:15px 44px;border-radius:50px;cursor:pointer;transition:all .3s;}
 .btn-s-main:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,229,160,.4);}
 .btn-s-sec{background:transparent;color:var(--muted);font-family:'Outfit';font-weight:600;font-size:.88rem;border:1px solid var(--border);padding:12px 30px;border-radius:50px;cursor:pointer;transition:all .2s;}
@@ -194,7 +194,7 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .ai-step.done .as-ico{background:var(--accent);color:#080C10;}
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 14px;display:grid;grid-template-columns:repeat(var(--nav-cols,4),1fr);z-index:100;}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,12,16,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 env(safe-area-inset-bottom,14px);display:grid;grid-template-columns:repeat(var(--nav-cols,5),1fr);z-index:100;}
 .ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;transition:all .2s;}
 .ni-ico{font-size:1.2rem;}.ni-lbl{font-size:.56rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;}
 .ni.active .ni-lbl{color:var(--accent);}
@@ -1368,8 +1368,8 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
   <div class="ni active" onclick="switchTab('dashboard')" id="nav-dashboard"><div class="ni-ico">🏠</div><div class="ni-lbl">Início</div></div>
   <div class="ni" onclick="switchTab('training')" id="nav-training"><div class="ni-ico">🏋️</div><div class="ni-lbl">Treinos</div></div>
   <div class="ni" id="nav-challenge" onclick="switchTab('challenge')" style="display:none"><div class="ni-ico">🔥</div><div class="ni-lbl">Desafio</div></div>
-  <div class="ni" onclick="switchTab('personal')" id="nav-personal" style="display:none"><div class="ni-ico">👨‍💼</div><div class="ni-lbl">Personal</div></div>
   <div class="ni" onclick="switchTab('community')" id="nav-community"><div class="ni-ico">👥</div><div class="ni-lbl">Comunidade</div></div>
+  <div class="ni" onclick="switchTab('personal')" id="nav-personal"><div class="ni-ico">👨‍💼</div><div class="ni-lbl">Personal</div></div>
   <div class="ni" onclick="switchTab('profile')" id="nav-profile"><div class="ni-ico">👤</div><div class="ni-lbl">Perfil</div></div>
 </div>
 <div class="toast" id="toast"></div>
@@ -2081,7 +2081,8 @@ async function startGenerate(){
   ['s1','s2','s3','s4'].forEach((id,i)=>setTimeout(()=>markS(id),(i+1)*650));
   setTimeout(()=>{buildPlan();markS('s5');},3000);
   setTimeout(async()=>{await saveProfile();markS('s6');},3800);
-  setTimeout(()=>{fillAll();loadWorkouts();document.getElementById('bottomNav').style.display='grid';goTo('dashboard');switchTab('dashboard');showToast('🎉 Plano criado com sucesso!','ok');},5000);
+  setTimeout(()=>{fillAll();loadWorkouts();document.getElementById('bottomNav').style.display='grid';goTo('dashboard');switchTab('dashboard');showToast('🎉 Plano ativo! Verifique seu e-mail com o token de confirmação.','ok');
+    setTimeout(()=>showToast('📧 E-mail enviado! Verifique também a pasta Spam.','info'),3500);},5000);
 }
 function markS(id){const el=document.getElementById(id);el.classList.add('done');el.querySelector('.as-ico').textContent='✓';}
 
@@ -3017,7 +3018,7 @@ function fillProfile(){
   document.getElementById('pi4').textContent=P.cal;
   // Show challenge tab for avancado
   const chNav=document.getElementById('nav-challenge');
-  if(chNav){ if(SESSION?.plan==='avancado'){chNav.style.display='flex';document.getElementById('bottomNav').style.setProperty('--nav-cols','5');}else{chNav.style.display='none';document.getElementById('bottomNav').style.setProperty('--nav-cols','4');}}
+  if(chNav){ if(SESSION?.plan==='avancado'){chNav.style.display='flex';document.getElementById('bottomNav').style.setProperty('--nav-cols','6');}else{chNav.style.display='none';document.getElementById('bottomNav').style.setProperty('--nav-cols','5');}}
   const dot=document.getElementById('supaDot'),txt=document.getElementById('supaText');
   if(dot)dot.className='suba-dot'+(dbOK?'':' off');
   if(txt)txt.textContent='';
@@ -3453,7 +3454,7 @@ function initChallenge(){
   if(chNav){
     chNav.style.display = isAdv ? 'flex' : 'none';
     const bnav = document.getElementById('bottomNav');
-    if(bnav) bnav.style.gridTemplateColumns = isAdv ? 'repeat(5,1fr)' : 'repeat(4,1fr)';
+    if(bnav) bnav.style.gridTemplateColumns = isAdv ? 'repeat(6,1fr)' : 'repeat(5,1fr)';
   }
   if(!isAdv) return;
   updateChStats();
@@ -3929,7 +3930,7 @@ function switchPtTab(tab, el){
 // Show personal nav button for everyone
 function showPersonalNav(){
   const nav = document.getElementById('nav-personal');
-  if(nav) nav.style.display = 'flex';
+  if(nav) nav.style.display = 'flex'; // always show
   // If personal, auto-open personal tab
   if(SESSION?.isPersonal){
     const myRole = userRoleCache[SESSION?.userId] || 'member';
@@ -4072,6 +4073,17 @@ async function sendPtContactMsg(){
   }]);
   await fetchPtContactMsgs();
 }
+
+// Detect post-purchase redirect
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('compra') === 'ok' || params.get('obrigado') === '1'){
+    setTimeout(()=>{
+      showToast('✅ Compra confirmada! Verifique seu e-mail para obter o token de acesso.','ok');
+      setTimeout(()=>showToast('📧 Não encontrou? Verifique a pasta Spam ou Promoções.','info'),4000);
+    }, 1000);
+  }
+})();
 </script>
 
 <!-- BOTÃO SUPORTE WHATSAPP -->
