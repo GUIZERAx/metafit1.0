@@ -4079,9 +4079,48 @@ async function sendPtContactMsg(){
   const params = new URLSearchParams(window.location.search);
   if(params.get('compra') === 'ok' || params.get('obrigado') === '1'){
     setTimeout(()=>{
-      showToast('✅ Compra confirmada! Verifique seu e-mail para obter o token de acesso.','ok');
-      setTimeout(()=>showToast('📧 Não encontrou? Verifique a pasta Spam ou Promoções.','info'),4000);
-    }, 1000);
+      const overlay = document.createElement('div');
+      overlay.id = 'purchase-welcome';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)';
+      overlay.innerHTML = `
+        <div style="background:#0C1018;border:2px solid rgba(0,229,160,.4);border-radius:24px;padding:32px 24px;max-width:380px;width:100%;text-align:center;position:relative">
+          <div style="font-size:3.5rem;margin-bottom:8px">🎉</div>
+          <div style="font-family:'Bebas Neue';font-size:2rem;letter-spacing:3px;color:#00E5A0;margin-bottom:8px">COMPRA CONFIRMADA!</div>
+          <div style="font-size:1rem;color:#F0F4F8;font-weight:700;margin-bottom:20px">Seu acesso ao Meta Fit está a caminho!</div>
+
+          <div style="background:#080C10;border:1.5px solid rgba(0,229,160,.25);border-radius:16px;padding:20px;margin-bottom:20px;text-align:left">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#00E5A0;color:#080C10;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <div>
+                <div style="font-weight:700;font-size:.9rem;color:#F0F4F8">Verifique seu e-mail</div>
+                <div style="font-size:.75rem;color:#6B8299">O token de acesso foi enviado agora</div>
+              </div>
+            </div>
+            <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:10px;padding:12px;display:flex;align-items:center;gap:8px;margin-bottom:14px">
+              <span style="font-size:1.2rem">⚠️</span>
+              <div style="font-size:.78rem;color:#FFD700;line-height:1.5"><strong>Não encontrou?</strong> Verifique a pasta <strong>Spam</strong> ou <strong>Promoções</strong> e marque como "Não é spam"</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#3D9BFF;color:#080C10;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <div>
+                <div style="font-weight:700;font-size:.9rem;color:#F0F4F8">Crie sua conta grátis</div>
+                <div style="font-size:.75rem;color:#6B8299">Clique em "Criar Conta" abaixo</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#FFD700;color:#080C10;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+              <div>
+                <div style="font-weight:700;font-size:.9rem;color:#F0F4F8">Cole o token e ative</div>
+                <div style="font-size:.75rem;color:#6B8299">Pronto — treino liberado! 💪</div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="document.getElementById('purchase-welcome').remove();document.getElementById('btnRegister').click()" style="width:100%;background:linear-gradient(135deg,#00E5A0,#3D9BFF);color:#080C10;font-family:'Outfit';font-weight:900;font-size:1rem;letter-spacing:1.5px;border:none;padding:15px;border-radius:50px;cursor:pointer;margin-bottom:10px">CRIAR MINHA CONTA →</button>
+          <div style="font-size:.72rem;color:#4A6070">Dúvidas? WhatsApp <a href="https://wa.me/5547997282959" style="color:#00E5A0;text-decoration:none">(47) 99728-2959</a></div>
+        </div>`;
+      document.body.appendChild(overlay);
+    }, 800);
   }
 })();
 </script>
